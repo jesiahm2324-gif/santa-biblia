@@ -1,0 +1,660 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Santa Biblia</title>
+<meta name="description" content="Santa Biblia Reina-Valera 1909: lectura, favoritos, autoestudio y seguimiento de lectura diaria.">
+<meta name="theme-color" content="#5E1A24">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Santa Biblia">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="icon" href="favicon.png" type="image/png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<style>
+:root{color-scheme:light; padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px)}
+body{margin:0; font:14px/1.4 system-ui,-apple-system,"Segoe UI",sans-serif}
+img{max-width:100%}
+[hidden]{display:none!important}
+</style>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Literata:ital,opsz,wght@0,7..72,400;0,7..72,600;1,7..72,400&family=Source+Sans+3:wght@400;600;700&display=swap">
+<style>
+/* Lector de una columna: cabecera vino fija arriba, texto en pergamino, navegación inferior de cinco secciones */
+:root{
+  --bg:#F6F1E7; --surface:#FFFCF6; --fg:#2A1A1C; --muted:#6B5652; --line:#E3D7C3;
+  --wine:#5E1A24; --wine-text:#7A2431; --gold:#E0B44C; --gold-soft:#F4E3B5;
+  --head:#5E1A24; --head-fg:#FFF3E3; --chip:#EFE5D3;
+  --f-display:'Cinzel', 'Trajan Pro', Georgia, serif;
+  --f-read:'Literata', Georgia, 'Times New Roman', serif;
+  --f-ui:'Source Sans 3', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --read-size:19px;
+}
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){
+  --bg:#1A1214; --surface:#241A1C; --fg:#F1E8DC; --muted:#B9A8A0; --line:#3B2D2F;
+  --wine:#E7A0A9; --wine-text:#E7A0A9; --gold:#E0B44C; --gold-soft:#4A3A1A;
+  --head:#4A141C; --head-fg:#FFF3E3; --chip:#33262A; color-scheme:dark } }
+:root[data-theme="dark"]{
+  --bg:#1A1214; --surface:#241A1C; --fg:#F1E8DC; --muted:#B9A8A0; --line:#3B2D2F;
+  --wine:#E7A0A9; --wine-text:#E7A0A9; --gold:#E0B44C; --gold-soft:#4A3A1A;
+  --head:#4A141C; --head-fg:#FFF3E3; --chip:#33262A; color-scheme:dark }
+
+html,body{height:100%}
+body{background:var(--bg); color:var(--fg); font-family:var(--f-ui); font-size:16px; -webkit-tap-highlight-color:transparent}
+body::before{content:""; position:fixed; inset:0 0 auto; height:env(safe-area-inset-top,0px); z-index:30; background:var(--head)}
+button{font:inherit; color:inherit; cursor:pointer}
+:focus-visible{outline:3px solid var(--gold); outline-offset:2px}
+
+header.top{position:sticky; top:env(safe-area-inset-top,0px); z-index:20; background:var(--head); color:var(--head-fg);
+  padding-left:max(16px,env(safe-area-inset-left,0px)); padding-right:max(16px,env(safe-area-inset-right,0px)); padding-block:10px}
+.top-in{max-width:720px; margin:0 auto; display:flex; align-items:center; gap:12px}
+.brand{display:flex; align-items:center; gap:10px; background:none; border:0; padding:0; color:inherit}
+.brand svg{width:36px; height:36px; flex:none}
+.brand span{font-family:var(--f-display); font-weight:700; font-size:19px; letter-spacing:1.5px}
+.ref-btn{margin-left:auto; display:flex; align-items:center; gap:6px; background:rgba(255,243,227,.12); border:1px solid rgba(255,243,227,.3);
+  color:var(--head-fg); border-radius:999px; padding:8px 14px; min-height:40px; font-weight:600; font-size:15px; white-space:nowrap; max-width:55%; overflow:hidden; text-overflow:ellipsis}
+.icon-btn{background:none; border:0; color:var(--head-fg); width:40px; height:40px; display:grid; place-items:center; border-radius:10px}
+
+main{max-width:720px; margin:0 auto; padding-left:max(16px,env(safe-area-inset-left,0px)); padding-right:max(16px,env(safe-area-inset-right,0px));
+  padding-block:20px calc(96px + env(safe-area-inset-bottom,0px))}
+section.view{display:flex; flex-direction:column; gap:18px}
+h1,h2,h3{text-wrap:balance; margin:0}
+.eyebrow{font-size:12px; font-weight:700; letter-spacing:1.6px; text-transform:uppercase; color:var(--muted)}
+.card{background:var(--surface); border:1px solid var(--line); border-radius:16px; padding:18px; display:flex; flex-direction:column; gap:10px; min-width:0}
+.btn{display:inline-flex; align-items:center; justify-content:center; gap:8px; min-height:44px; padding:10px 18px; border-radius:12px; border:1px solid var(--line);
+  background:var(--surface); font-weight:600; text-decoration:none; color:var(--fg)}
+.btn.primary{background:var(--head); border-color:var(--head); color:var(--head-fg)}
+.btn.wa{background:#1E8A4C; border-color:#1E8A4C; color:#fff}
+.row{display:flex; flex-wrap:wrap; gap:10px}
+.quote{font-family:var(--f-read); font-size:18px; line-height:1.6}
+.quote cite{display:block; margin-top:6px; font-family:var(--f-ui); font-style:normal; font-weight:700; font-size:14px; color:var(--wine-text)}
+.muted{color:var(--muted)}
+.small{font-size:14px}
+
+/* Inicio */
+.hero{display:flex; flex-direction:column; align-items:center; text-align:center; gap:8px; padding-block:6px 4px}
+.hero svg{width:96px; height:96px}
+.hero h1{font-family:var(--f-display); font-size:30px; letter-spacing:2px; color:var(--wine-text)}
+.continue{background:var(--head); color:var(--head-fg); border:0}
+.continue .eyebrow{color:rgba(255,243,227,.8)}
+.continue .quote cite{color:var(--gold)}
+.continue .btn{background:var(--gold); border-color:var(--gold); color:#2A1A1C}
+details.card summary{font-weight:700; cursor:pointer; min-height:28px}
+details.card ol{margin:6px 0 0; padding-left:20px; line-height:1.6}
+
+/* Lector */
+.chap-head{display:flex; align-items:baseline; gap:10px; flex-wrap:wrap}
+.chap-head h2{font-family:var(--f-display); font-size:26px; color:var(--wine-text)}
+.text{font-family:var(--f-read); font-size:var(--read-size); line-height:1.75; max-width:65ch}
+.v{margin:0 0 6px; padding:4px 6px; border-radius:8px; scroll-margin-top:calc(80px + env(safe-area-inset-top,0px)); cursor:pointer}
+.v sup{font-family:var(--f-ui); font-size:.62em; font-weight:700; color:var(--wine-text); margin-right:4px; vertical-align:.45em}
+.v.fav{background:var(--gold-soft)}
+.v.note sup::after{content:"✎"; margin-left:2px}
+.v.flash{outline:2px solid var(--gold)}
+.chap-nav{display:flex; gap:10px}
+.chap-nav .btn{flex:1}
+.study textarea, .sheet textarea, .search-box input{width:100%; box-sizing:border-box; font:inherit; font-size:16px; color:var(--fg); background:var(--bg);
+  border:1px solid var(--line); border-radius:10px; padding:10px 12px}
+.study textarea, .sheet textarea{min-height:76px; resize:vertical; font-family:var(--f-read)}
+.study label{font-weight:600; font-size:15px}
+.qa{display:flex; flex-direction:column; gap:6px}
+.done{color:#1E7A45; font-weight:700}
+:root[data-theme="dark"] .done{color:#7FD3A2}
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]) .done{color:#7FD3A2} }
+
+/* Selector de libros */
+.testament{display:flex; flex-direction:column; gap:8px}
+.grid{display:grid; grid-template-columns:repeat(auto-fill,minmax(132px,1fr)); gap:8px}
+.grid.ch{grid-template-columns:repeat(auto-fill,minmax(52px,1fr))}
+.chip{min-height:44px; border-radius:10px; border:1px solid var(--line); background:var(--surface); padding:8px 10px; text-align:left; font-weight:600; font-size:15px}
+.grid.ch .chip{text-align:center; font-variant-numeric:tabular-nums}
+.chip.read{background:var(--chip)}
+.chip.cur{border-color:var(--wine-text); border-width:2px}
+
+/* Buscar / listas */
+.search-box{display:flex; gap:8px}
+.search-box input{flex:1; min-width:0}
+.list{display:flex; flex-direction:column; gap:10px}
+.item{background:var(--surface); border:1px solid var(--line); border-radius:14px; padding:14px; display:flex; flex-direction:column; gap:6px; text-align:left}
+.item .ref{font-weight:700; color:var(--wine-text); font-size:14px}
+.item .t{font-family:var(--f-read); font-size:17px; line-height:1.55}
+.item mark{background:var(--gold-soft); color:inherit; border-radius:3px}
+.item .acts{display:flex; gap:8px; flex-wrap:wrap}
+.empty{text-align:center; padding:28px 12px; color:var(--muted); line-height:1.6}
+
+.bar{height:10px; background:var(--chip); border-radius:99px; overflow:hidden}
+.bar i{display:block; height:100%; background:var(--gold)}
+.stat{display:flex; justify-content:space-between; font-variant-numeric:tabular-nums; font-weight:600}
+
+/* Navegación inferior */
+nav.tabs{position:fixed; left:0; right:0; bottom:0; z-index:20; background:var(--surface); border-top:1px solid var(--line);
+  padding-bottom:env(safe-area-inset-bottom,0px); padding-left:env(safe-area-inset-left,0px); padding-right:env(safe-area-inset-right,0px)}
+.tabs-in{max-width:720px; margin:0 auto; display:grid; grid-template-columns:repeat(5,1fr)}
+.tab{background:none; border:0; display:flex; flex-direction:column; align-items:center; gap:2px; padding:8px 2px; min-height:56px; font-size:12px; font-weight:600; color:var(--muted)}
+.tab svg{width:24px; height:24px}
+.tab[aria-current="page"]{color:var(--wine-text)}
+
+/* Hoja de versículo */
+.backdrop{position:fixed; inset:0; background:rgba(20,10,12,.45); z-index:40}
+.sheet{position:fixed; left:0; right:0; bottom:0; z-index:41; background:var(--surface); border-radius:20px 20px 0 0;
+  padding:18px max(16px,env(safe-area-inset-right,0px)) calc(18px + env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px));
+  max-height:85vh; overflow:auto; box-shadow:0 -10px 30px rgba(0,0,0,.2)}
+.sheet-in{max-width:720px; margin:0 auto; display:flex; flex-direction:column; gap:12px}
+.toast{position:fixed; left:50%; transform:translateX(-50%); bottom:calc(76px + env(safe-area-inset-bottom,0px)); z-index:50; background:var(--fg); color:var(--bg);
+  padding:10px 16px; border-radius:10px; font-weight:600; max-width:90vw}
+.size-row{display:flex; align-items:center; gap:10px}
+/* Menú lateral de libros */
+.menu-btn{background:none; border:0; color:var(--head-fg); width:44px; height:44px; display:grid; place-items:center; border-radius:10px; margin-left:-8px; flex:none}
+.menu-btn svg{width:26px; height:26px}
+.drawer-bg{position:fixed; inset:0; background:rgba(20,10,12,.5); z-index:45}
+.drawer{position:fixed; top:0; bottom:0; left:0; z-index:46; width:min(340px,86vw); background:var(--surface); border-right:1px solid var(--line);
+  display:flex; flex-direction:column; box-shadow:10px 0 30px rgba(0,0,0,.25)}
+.drawer-head{background:var(--head); color:var(--head-fg); display:flex; align-items:center; gap:10px;
+  padding:calc(12px + env(safe-area-inset-top,0px)) 12px 12px max(16px,env(safe-area-inset-left,0px))}
+.drawer-head strong{font-family:var(--f-display); font-size:18px; letter-spacing:1.5px}
+.drawer-head .icon-btn{margin-left:auto}
+.drawer-body{overflow-y:auto; flex:1; padding:8px 0 calc(16px + env(safe-area-inset-bottom,0px)); padding-left:env(safe-area-inset-left,0px)}
+.drawer details.tst > summary{list-style:none; display:flex; align-items:center; gap:8px; padding:14px 16px; font-family:var(--f-display); font-weight:700;
+  font-size:16px; letter-spacing:1px; color:var(--wine-text); cursor:pointer; border-bottom:1px solid var(--line); min-height:24px}
+.drawer summary::-webkit-details-marker{display:none}
+.drawer summary .chev{margin-left:auto; transition:transform .2s; color:var(--muted)}
+.drawer details[open] > summary .chev{transform:rotate(90deg)}
+.drawer .sect{padding:12px 16px 4px; font-size:11px; font-weight:700; letter-spacing:1.6px; text-transform:uppercase; color:var(--muted)}
+.drawer details.bk > summary{list-style:none; display:flex; align-items:center; gap:8px; padding:11px 16px 11px 24px; min-height:24px; cursor:pointer; font-weight:600; font-size:16px}
+.drawer details.bk > summary .n{font-size:13px; font-weight:400; color:var(--muted); font-variant-numeric:tabular-nums}
+.drawer details.bk.cur > summary{color:var(--wine-text); background:var(--chip)}
+.drawer .chs{display:grid; grid-template-columns:repeat(auto-fill,minmax(44px,1fr)); gap:6px; padding:6px 16px 12px 24px}
+.drawer .chs button{min-height:44px; border-radius:8px; border:1px solid var(--line); background:var(--bg); font-weight:600; font-variant-numeric:tabular-nums}
+.drawer .chs button.read{background:var(--chip)}
+.drawer .chs button.cur{border:2px solid var(--wine-text)}
+@media (prefers-reduced-motion: reduce){ .drawer summary .chev{transition:none} }
+@media (max-width:440px){ .brand span{font-size:16px; letter-spacing:1px} .brand svg{width:32px; height:32px} .ref-btn{padding:8px 12px; font-size:14px} }
+@media (max-width:370px){ .brand span{display:none} }
+.loading{display:flex; flex-direction:column; align-items:center; gap:12px; padding:60px 0; color:var(--muted); text-align:center}
+@media (prefers-reduced-motion: no-preference){ .loading svg{animation:glow 1.8s ease-in-out infinite} @keyframes glow{50%{opacity:.55}} }
+</style>
+
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="logo" viewBox="0 0 240 240">
+    <rect width="240" height="240" rx="54" fill="#5E1A24"></rect>
+    <path d="M120 46 C144 74 142 100 120 120 C98 100 96 74 120 46 Z" fill="#E0B44C"></path>
+    <path d="M120 76 C130 90 129 104 120 112 C111 104 110 90 120 76 Z" fill="#FFF3D6"></path>
+    <path d="M84 64 L94 74 M156 64 L146 74 M74 96 L88 98 M166 96 L152 98" stroke="#E0B44C" stroke-width="3" stroke-linecap="round" opacity="0.75"></path>
+    <path d="M38 150 Q80 128 117 148 L117 198 Q80 178 38 198 Z" fill="#F6F1E7"></path>
+    <path d="M123 148 Q160 128 202 150 L202 198 Q160 178 123 198 Z" fill="#F6F1E7"></path>
+    <path d="M52 162 Q80 150 106 162 M52 174 Q80 162 106 174 M134 162 Q160 150 188 162 M134 174 Q160 162 188 174" stroke="#C9A97A" stroke-width="2" fill="none"></path>
+  </symbol>
+</svg>
+
+<header class="top">
+  <div class="top-in">
+    <button class="menu-btn" id="menuBtn" aria-label="Abrir libros de la Biblia" aria-expanded="false" aria-controls="drawer"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg></button>
+    <button class="brand" id="brand" aria-label="Ir al inicio"><svg aria-hidden="true"><use href="#logo"></use></svg><span>Santa Biblia</span></button>
+    <button class="ref-btn" id="refBtn" aria-label="Elegir libro y capítulo">Génesis 1 ▾</button>
+  </div>
+</header>
+
+<main id="main">
+  <div class="loading" id="loading"><svg width="72" height="72" aria-hidden="true"><use href="#logo"></use></svg><p>Abriendo las Escrituras…</p></div>
+
+  <section class="view" id="v-inicio" hidden>
+    <div class="hero">
+      <svg aria-hidden="true"><use href="#logo"></use></svg>
+      <h1>Santa Biblia</h1>
+      <p class="muted small">Lámpara es á mis pies tu palabra · Salmo 119:105</p>
+    </div>
+    <div class="card continue" id="continueCard"></div>
+    <div class="card" id="votdCard"></div>
+    <div class="card">
+      <span class="eyebrow">Comparte la app</span>
+      <p class="small" style="margin:0">Envía el enlace por WhatsApp. Quien lo abra puede leer y agregarla a su pantalla de inicio, sin descargar nada ni pagar licencia.</p>
+      <div class="row">
+        <a class="btn wa" id="shareApp" href="#" target="_blank" rel="noopener">Compartir por WhatsApp</a>
+        <button class="btn" id="copyApp">Copiar enlace</button>
+      </div>
+    </div>
+    <details class="card">
+      <summary>Instalar en tu teléfono</summary>
+      <button class="btn primary" id="installBtn" hidden>Instalar la app</button>
+      <p class="small" style="margin:0"><b>Android (Chrome):</b></p>
+      <ol class="small"><li>Abre el enlace en Chrome.</li><li>Toca el menú ⋮ arriba a la derecha.</li><li>Elige «Agregar a pantalla de inicio».</li></ol>
+      <p class="small" style="margin:0"><b>iPhone (Safari):</b></p>
+      <ol class="small"><li>Abre el enlace en Safari.</li><li>Toca el botón Compartir.</li><li>Elige «Agregar a inicio».</li></ol>
+      <p class="small muted" style="margin:0">Tus favoritos, notas y avance se guardan en este teléfono y en este navegador.</p>
+    </details>
+    <div class="card">
+      <span class="eyebrow">Tamaño de letra</span>
+      <div class="size-row">
+        <button class="btn" id="sizeDown" aria-label="Letra más pequeña">A−</button>
+        <span id="sizeLbl" class="small" style="font-variant-numeric:tabular-nums">19 px</span>
+        <button class="btn" id="sizeUp" aria-label="Letra más grande">A+</button>
+      </div>
+    </div>
+    <p class="small muted" style="text-align:center;margin:0">Texto: Reina-Valera 1909, de dominio público.</p>
+  </section>
+
+  <section class="view" id="v-libros" hidden>
+    <div id="pickBooks"></div>
+    <div id="pickChaps" hidden></div>
+  </section>
+
+  <section class="view" id="v-leer" hidden>
+    <div class="chap-head"><h2 id="chapTitle"></h2><span id="chapRead" class="small"></span></div>
+    <p class="small muted" style="margin:0">Toca un versículo para guardarlo, anotarlo o compartirlo.</p>
+    <div class="text" id="chapText"></div>
+    <div class="chap-nav"><button class="btn" id="prevCh">← Anterior</button><button class="btn" id="nextCh">Siguiente →</button></div>
+    <button class="btn primary" id="markRead">Marcar capítulo como leído</button>
+    <div class="card study">
+      <span class="eyebrow">Autoestudio de este capítulo</span>
+      <div class="qa"><label for="q0">1. ¿Qué dice el pasaje? Resúmelo con tus palabras.</label><textarea id="q0"></textarea></div>
+      <div class="qa"><label for="q1">2. ¿Qué me enseña acerca de Dios?</label><textarea id="q1"></textarea></div>
+      <div class="qa"><label for="q2">3. ¿Hay un mandato, una promesa o un ejemplo que seguir?</label><textarea id="q2"></textarea></div>
+      <div class="qa"><label for="q3">4. ¿Cómo lo aplicaré hoy?</label><textarea id="q3"></textarea></div>
+      <span class="small muted" id="studySaved">Se guarda solo mientras escribes.</span>
+    </div>
+  </section>
+
+  <section class="view" id="v-buscar" hidden>
+    <h2 style="font-family:var(--f-display);color:var(--wine-text)">Buscar</h2>
+    <form class="search-box" id="searchForm">
+      <label for="q" class="eyebrow" style="position:absolute;left:-9999px">Palabra o frase</label>
+      <input id="q" type="search" placeholder="Ej.: gracia, buen pastor" autocomplete="off">
+      <button class="btn primary" type="submit">Buscar</button>
+    </form>
+    <p class="small muted" id="searchInfo" style="margin:0">Busca en los 66 libros. No importan las tildes.</p>
+    <div class="list" id="results"></div>
+  </section>
+
+  <section class="view" id="v-favs" hidden>
+    <h2 style="font-family:var(--f-display);color:var(--wine-text)">Favoritos</h2>
+    <div class="list" id="favList"></div>
+  </section>
+
+  <section class="view" id="v-estudio" hidden>
+    <h2 style="font-family:var(--f-display);color:var(--wine-text)">Mi estudio</h2>
+    <div class="card" id="progress"></div>
+    <div class="card" id="history"></div>
+    <span class="eyebrow">Mis notas</span>
+    <div class="list" id="notesList"></div>
+  </section>
+</main>
+
+<nav class="tabs" aria-label="Secciones">
+  <div class="tabs-in">
+    <button class="tab" data-tab="inicio"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 10.5 12 3l9 7.5V21h-6v-6H9v6H3z"/></svg>Inicio</button>
+    <button class="tab" data-tab="leer"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 5c3-1.5 6.5-1.5 10 1 3.5-2.5 7-2.5 10-1v14c-3-1.5-6.5-1.5-10 1-3.5-2.5-7-2.5-10-1z"/><path d="M12 6v14"/></svg>Leer</button>
+    <button class="tab" data-tab="buscar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></svg>Buscar</button>
+    <button class="tab" data-tab="favs"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><path d="m12 3 2.8 5.7 6.2.9-4.5 4.4 1 6.2L12 17.3 6.5 20.2l1-6.2L3 9.6l6.2-.9z"/></svg>Favoritos</button>
+    <button class="tab" data-tab="estudio"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20h4L19 9l-4-4L4 16z"/><path d="m13.5 6.5 4 4"/></svg>Estudio</button>
+  </div>
+</nav>
+
+<div class="drawer-bg" id="drawerBg" hidden></div>
+<aside class="drawer" id="drawer" aria-label="Libros de la Biblia" hidden>
+  <div class="drawer-head">
+    <svg width="30" height="30" aria-hidden="true"><use href="#logo"></use></svg>
+    <strong>Libros</strong>
+    <button class="icon-btn" id="drawerClose" aria-label="Cerrar menú"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg></button>
+  </div>
+  <div class="drawer-body" id="drawerBody"></div>
+</aside>
+
+<div class="backdrop" id="backdrop" hidden></div>
+<div class="sheet" id="sheet" role="dialog" aria-modal="true" aria-labelledby="sheetRef" hidden>
+  <div class="sheet-in">
+    <div style="display:flex;align-items:center;gap:10px"><strong id="sheetRef" style="color:var(--wine-text)"></strong>
+      <button class="btn" id="sheetClose" style="margin-left:auto" aria-label="Cerrar">Cerrar</button></div>
+    <p class="quote" id="sheetText" style="margin:0"></p>
+    <div class="row">
+      <button class="btn primary" id="favBtn">★ Guardar en favoritos</button>
+      <button class="btn" id="copyV">Copiar</button>
+      <a class="btn wa" id="waV" href="#" target="_blank" rel="noopener">WhatsApp</a>
+    </div>
+    <label for="noteTa" style="font-weight:600">Mi nota sobre este versículo</label>
+    <textarea id="noteTa" placeholder="Escribe lo que Dios te habla en este pasaje"></textarea>
+    <button class="btn" id="saveNote">Guardar nota</button>
+  </div>
+</div>
+<div class="toast" id="toast" role="status" hidden></div>
+
+<script>
+(function(){
+const APP_URL = '';
+const VOTD = [[42,3,16],[18,23,1],[18,119,105],[19,3,5],[22,40,31],[39,11,28],[44,8,28],[49,4,13],[5,1,9],[23,29,11],[18,46,2],[61,1,9],[57,11,1],[44,12,2],[39,6,33],[47,5,22],[48,2,8],[54,3,16],[18,91,1],[24,3,22],[1,14,14],[18,27,1]];
+const QN = 4;
+let B = null, cur = {b:0,c:0}, view = 'inicio', sheetRef = null, normIdx = null;
+
+// ---------- almacenamiento local ----------
+function load(k,d){ try{ const v = localStorage.getItem('sb.'+k); return v ? JSON.parse(v) : d; }catch(e){ return d; } }
+function save(k,v){ try{ localStorage.setItem('sb.'+k, JSON.stringify(v)); }catch(e){} }
+let favs = load('favs', []), notes = load('notes', {}), study = load('study', {}), readCh = load('read', {}),
+    last = load('last', null), hist = load('hist', {}), size = load('size', 19);
+
+const $ = id => document.getElementById(id);
+const esc = s => String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const key = (b,c,v) => v==null ? b+':'+c : b+':'+c+':'+v;
+const refName = (b,c,v) => B[b][0]+' '+(c+1)+(v!=null?':'+v:'');
+const verse = (b,c,v) => (B[b] && B[b][1][c] && B[b][1][c][v-1]) || '';
+const today = () => { const d=new Date(); return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0'); };
+const fmtDate = s => { const [y,m,d]=s.split('-').map(Number); return new Date(y,m-1,d).toLocaleDateString('es',{weekday:'long',day:'numeric',month:'long'}); };
+const appLink = () => APP_URL || location.href.split('#')[0];
+const wa = t => 'https://wa.me/?text=' + encodeURIComponent(t);
+
+let toastT;
+function toast(m){ const t=$('toast'); t.textContent=m; t.hidden=false; clearTimeout(toastT); toastT=setTimeout(()=>t.hidden=true,2200); }
+function copy(text, ok){
+  try{ navigator.clipboard.writeText(text).then(()=>toast(ok), ()=>toast('No se pudo copiar. Mantén pulsado el texto para copiarlo.')); }
+  catch(e){ toast('No se pudo copiar. Mantén pulsado el texto para copiarlo.'); }
+}
+
+// ---------- vistas ----------
+function show(v){
+  view = v;
+  ['inicio','libros','leer','buscar','favs','estudio'].forEach(n => $('v-'+n).hidden = n!==v);
+  document.querySelectorAll('.tab').forEach(t => {
+    const on = t.dataset.tab===v || (v==='libros' && t.dataset.tab==='leer');
+    if(on) t.setAttribute('aria-current','page'); else t.removeAttribute('aria-current');
+  });
+  if(v==='inicio') renderHome();
+  if(v==='favs') renderFavs();
+  if(v==='estudio') renderStudy();
+  if(v==='libros') renderBooks();
+  if(v!=='leer') window.scrollTo(0,0);
+}
+
+// ---------- última lectura ----------
+function saveLast(b,c,v){
+  last = {b,c,v,d:today()}; save('last', last);
+  hist[today()] = {b,c,v};
+  const ks = Object.keys(hist).sort(); while(ks.length>60) delete hist[ks.shift()];
+  save('hist', hist);
+}
+function prevDay(){
+  const t = today(); const ks = Object.keys(hist).filter(k=>k<t).sort();
+  return ks.length ? [ks[ks.length-1], hist[ks[ks.length-1]]] : null;
+}
+
+function renderHome(){
+  const cc = $('continueCard'); const p = prevDay();
+  if(last && B[last.b]){
+    let h = '<span class="eyebrow">Seguir leyendo</span>'+
+      '<p class="quote" style="margin:0">'+esc(verse(last.b,last.c,last.v))+'<cite>'+esc(refName(last.b,last.c,last.v))+'</cite></p>';
+    if(p) h += '<p class="small" style="margin:0">El '+esc(fmtDate(p[0]))+' llegaste hasta <b>'+esc(refName(p[1].b,p[1].c,p[1].v))+'</b>.</p>';
+    h += '<div class="row"><button class="btn" id="goLast">Continuar en '+esc(refName(last.b,last.c,last.v))+'</button></div>';
+    cc.innerHTML = h;
+    $('goLast').onclick = () => openChapter(last.b,last.c,last.v);
+  } else {
+    cc.innerHTML = '<span class="eyebrow">Comienza a leer</span><p class="quote" style="margin:0">'+esc(verse(0,0,1))+'<cite>Génesis 1:1</cite></p>'+
+      '<p class="small" style="margin:0">La app recordará dónde te quedas cada día para que no pierdas la secuencia.</p>'+
+      '<div class="row"><button class="btn" id="goLast">Empezar en Génesis 1</button><button class="btn" id="goJn" style="background:transparent;color:inherit;border-color:rgba(255,243,227,.5)">Empezar en Juan 1</button></div>';
+    $('goLast').onclick = () => openChapter(0,0,1);
+    $('goJn').onclick = () => openChapter(42,0,1);
+  }
+  const n = Math.floor(Date.now()/86400000) % VOTD.length; const [vb,vc,vv] = VOTD[n];
+  $('votdCard').innerHTML = '<span class="eyebrow">Versículo del día</span><p class="quote" style="margin:0">'+esc(verse(vb,vc-1,vv))+'<cite>'+esc(refName(vb,vc-1,vv))+'</cite></p>'+
+    '<div class="row"><button class="btn" id="votdOpen">Leer el capítulo</button></div>';
+  $('votdOpen').onclick = () => openChapter(vb,vc-1,vv);
+  $('shareApp').href = wa('Te comparto la Santa Biblia (Reina-Valera 1909): lectura, favoritos y autoestudio. Ábrela aquí: '+appLink());
+}
+
+// ---------- selector ----------
+function renderBooks(){
+  $('pickChaps').hidden = true; $('pickBooks').hidden = false;
+  const part = (title, from, to) => {
+    let h = '<div class="testament"><span class="eyebrow">'+title+'</span><div class="grid">';
+    for(let i=from;i<to;i++) h += '<button class="chip'+(i===cur.b?' cur':'')+'" data-b="'+i+'">'+esc(B[i][0])+'</button>';
+    return h + '</div></div>';
+  };
+  $('pickBooks').innerHTML = '<div style="display:flex;flex-direction:column;gap:18px">'+part('Antiguo Testamento',0,39)+part('Nuevo Testamento',39,66)+'</div>';
+  $('pickBooks').querySelectorAll('[data-b]').forEach(el => el.onclick = () => renderChaps(+el.dataset.b));
+}
+function renderChaps(b){
+  $('pickBooks').hidden = true; const pc = $('pickChaps'); pc.hidden = false;
+  let h = '<div style="display:flex;flex-direction:column;gap:12px"><div style="display:flex;align-items:center;gap:10px"><button class="btn" id="backBooks">← Libros</button><h2 style="font-family:var(--f-display);color:var(--wine-text)">'+esc(B[b][0])+'</h2></div><div class="grid ch">';
+  B[b][1].forEach((_,c) => h += '<button class="chip'+(readCh[key(b,c)]?' read':'')+(b===cur.b&&c===cur.c?' cur':'')+'" data-c="'+c+'" aria-label="Capítulo '+(c+1)+(readCh[key(b,c)]?', leído':'')+'">'+(c+1)+'</button>');
+  pc.innerHTML = h + '</div><p class="small muted" style="margin:0">Los capítulos sombreados ya los marcaste como leídos.</p></div>';
+  $('backBooks').onclick = renderBooks;
+  pc.querySelectorAll('[data-c]').forEach(el => el.onclick = () => openChapter(b, +el.dataset.c, 1));
+}
+
+// ---------- lector ----------
+function openChapter(b,c,v){
+  cur = {b,c}; show('leer');
+  $('refBtn').textContent = refName(b,c)+' ▾';
+  $('chapTitle').textContent = refName(b,c);
+  const favSet = new Set(favs.map(f=>key(f.b,f.c,f.v)));
+  $('chapText').innerHTML = B[b][1][c].map((t,i) => {
+    const k = key(b,c,i+1);
+    return '<p class="v'+(favSet.has(k)?' fav':'')+(notes[k]?' note':'')+'" data-v="'+(i+1)+'" tabindex="0"><sup>'+(i+1)+'</sup>'+esc(t)+'</p>';
+  }).join('');
+  $('prevCh').disabled = b===0 && c===0; $('nextCh').disabled = b===65 && c===B[65][1].length-1;
+  updateRead();
+  const st = study[key(b,c)] || [];
+  for(let i=0;i<QN;i++) $('q'+i).value = st[i] || '';
+  $('studySaved').textContent = 'Se guarda solo mientras escribes.';
+  const target = v || 1;
+  saveLast(b,c,target);
+  requestAnimationFrame(() => {
+    if(target>1){ const el = $('chapText').querySelector('[data-v="'+target+'"]'); if(el){ el.scrollIntoView({block:'start'}); el.classList.add('flash'); setTimeout(()=>el.classList.remove('flash'),1800); } }
+    else window.scrollTo(0,0);
+  });
+}
+function updateRead(){
+  const r = !!readCh[key(cur.b,cur.c)];
+  $('chapRead').innerHTML = r ? '<span class="done">✓ Leído</span>' : '';
+  $('markRead').textContent = r ? 'Quitar marca de leído' : 'Marcar capítulo como leído';
+}
+function step(d){
+  let {b,c} = cur; c += d;
+  if(c<0){ if(b===0) return; b--; c=B[b][1].length-1; }
+  if(c>=B[b][1].length){ if(b===65) return; b++; c=0; }
+  openChapter(b,c,1);
+}
+$('prevCh').onclick = () => step(-1);
+$('nextCh').onclick = () => step(1);
+$('markRead').onclick = () => {
+  const k = key(cur.b,cur.c);
+  if(readCh[k]) delete readCh[k]; else { readCh[k] = today(); toast('Capítulo marcado como leído'); }
+  save('read', readCh); updateRead();
+};
+let stT;
+for(let i=0;i<QN;i++) $('q'+i).addEventListener('input', () => {
+  clearTimeout(stT); stT = setTimeout(() => {
+    const vals = []; for(let j=0;j<QN;j++) vals.push($('q'+j).value);
+    const k = key(cur.b,cur.c);
+    if(vals.some(x=>x.trim())) study[k] = vals; else delete study[k];
+    save('study', study); $('studySaved').textContent = 'Guardado.';
+  }, 500);
+});
+$('chapText').addEventListener('click', e => { const p = e.target.closest('.v'); if(p) openSheet(cur.b,cur.c,+p.dataset.v); });
+$('chapText').addEventListener('keydown', e => { if(e.key==='Enter'){ const p=e.target.closest('.v'); if(p) openSheet(cur.b,cur.c,+p.dataset.v); } });
+
+let scT;
+window.addEventListener('scroll', () => {
+  if(view!=='leer') return;
+  clearTimeout(scT); scT = setTimeout(() => {
+    const top = document.querySelector('header.top').getBoundingClientRect().bottom + 8;
+    const vs = $('chapText').querySelectorAll('.v');
+    for(const p of vs){ if(p.getBoundingClientRect().bottom > top){ saveLast(cur.b,cur.c,+p.dataset.v); break; } }
+  }, 400);
+}, {passive:true});
+
+// ---------- hoja de versículo ----------
+function openSheet(b,c,v){
+  sheetRef = {b,c,v}; const t = verse(b,c,v), r = refName(b,c,v);
+  $('sheetRef').textContent = r; $('sheetText').textContent = t;
+  $('noteTa').value = notes[key(b,c,v)] || '';
+  $('waV').href = wa('«'+t+'» '+r+' (RV1909)\n\n'+appLink());
+  syncFavBtn();
+  $('backdrop').hidden = false; $('sheet').hidden = false; $('sheetClose').focus();
+  saveLast(b,c,v);
+}
+function closeSheet(){ $('backdrop').hidden = true; $('sheet').hidden = true; sheetRef = null; }
+function isFav(b,c,v){ return favs.some(f=>f.b===b&&f.c===c&&f.v===v); }
+function syncFavBtn(){ const f = isFav(sheetRef.b,sheetRef.c,sheetRef.v); $('favBtn').textContent = f ? '★ Quitar de favoritos' : '★ Guardar en favoritos'; }
+function markVerse(b,c,v){
+  if(view!=='leer'||cur.b!==b||cur.c!==c) return;
+  const el = $('chapText').querySelector('[data-v="'+v+'"]'); if(!el) return;
+  el.classList.toggle('fav', isFav(b,c,v)); el.classList.toggle('note', !!notes[key(b,c,v)]);
+}
+$('favBtn').onclick = () => {
+  const {b,c,v} = sheetRef;
+  if(isFav(b,c,v)){ favs = favs.filter(f=>!(f.b===b&&f.c===c&&f.v===v)); toast('Quitado de favoritos'); }
+  else { favs.unshift({b,c,v,d:today()}); toast('Guardado en favoritos'); }
+  save('favs', favs); syncFavBtn(); markVerse(b,c,v);
+};
+$('copyV').onclick = () => { const {b,c,v} = sheetRef; copy('«'+verse(b,c,v)+'» '+refName(b,c,v)+' (RV1909)', 'Versículo copiado'); };
+$('saveNote').onclick = () => {
+  const {b,c,v} = sheetRef, k = key(b,c,v), t = $('noteTa').value.trim();
+  if(t) notes[k] = t; else delete notes[k];
+  save('notes', notes); markVerse(b,c,v); toast(t ? 'Nota guardada' : 'Nota borrada');
+};
+$('sheetClose').onclick = closeSheet; $('backdrop').onclick = closeSheet;
+document.addEventListener('keydown', e => { if(e.key==='Escape' && !$('sheet').hidden) closeSheet(); });
+
+// ---------- buscar ----------
+const norm = s => s.normalize('NFD').replace(/[̀-ͯ]/g,'').toLowerCase();
+$('searchForm').addEventListener('submit', e => {
+  e.preventDefault();
+  const q = norm($('q').value.trim()); const out = $('results');
+  if(q.length < 3){ $('searchInfo').textContent = 'Escribe al menos 3 letras.'; out.innerHTML=''; return; }
+  if(!normIdx){ normIdx = []; B.forEach((bk,b)=>bk[1].forEach((ch,c)=>ch.forEach((t,i)=>normIdx.push([b,c,i+1,norm(t)])))); }
+  const hits = normIdx.filter(x => x[3].includes(q));
+  const shown = hits.slice(0,200);
+  $('searchInfo').textContent = hits.length ? hits.length+' versículos encontrados'+(hits.length>200?' (se muestran los primeros 200)':'')+'.' : 'No se encontró esa palabra. Prueba con otra forma, por ejemplo «fe» o «fé».';
+  out.innerHTML = shown.map(([b,c,v]) => {
+    const t = verse(b,c,v), nt = norm(t), at = nt.indexOf(q);
+    const hl = at<0 ? esc(t) : esc(t.slice(0,at))+'<mark>'+esc(t.slice(at,at+q.length))+'</mark>'+esc(t.slice(at+q.length));
+    return '<button class="item" data-r="'+b+','+c+','+v+'"><span class="ref">'+esc(refName(b,c,v))+'</span><span class="t">'+hl+'</span></button>';
+  }).join('');
+  out.querySelectorAll('[data-r]').forEach(el => el.onclick = () => { const [b,c,v] = el.dataset.r.split(',').map(Number); openChapter(b,c,v); });
+});
+
+// ---------- favoritos ----------
+function renderFavs(){
+  const l = $('favList');
+  if(!favs.length){ l.innerHTML = '<div class="empty">Aún no tienes favoritos.<br>Mientras lees, toca un versículo y elige «Guardar en favoritos».</div>'; return; }
+  l.innerHTML = favs.map((f,i) => '<div class="item"><span class="ref">'+esc(refName(f.b,f.c,f.v))+'</span><span class="t">'+esc(verse(f.b,f.c,f.v))+'</span>'+
+    '<div class="acts"><button class="btn" data-open="'+i+'">Leer</button><a class="btn wa" target="_blank" rel="noopener" href="'+esc(wa('«'+verse(f.b,f.c,f.v)+'» '+refName(f.b,f.c,f.v)+' (RV1909)\n\n'+appLink()))+'">WhatsApp</a><button class="btn" data-del="'+i+'">Quitar</button></div></div>').join('');
+  l.querySelectorAll('[data-open]').forEach(el => el.onclick = () => { const f = favs[+el.dataset.open]; openChapter(f.b,f.c,f.v); });
+  l.querySelectorAll('[data-del]').forEach(el => el.onclick = () => { favs.splice(+el.dataset.del,1); save('favs',favs); renderFavs(); toast('Quitado de favoritos'); });
+}
+
+// ---------- estudio ----------
+function renderStudy(){
+  const total = 1189, at = 929;
+  let rd = 0, rdA = 0;
+  Object.keys(readCh).forEach(k => { rd++; if(+k.split(':')[0] < 39) rdA++; });
+  const pct = (a,b) => Math.round(a*1000/b)/10;
+  $('progress').innerHTML = '<span class="eyebrow">Avance de lectura</span>'+
+    '<div class="stat"><span>Toda la Biblia</span><span>'+rd+' / '+total+' capítulos</span></div><div class="bar"><i style="width:'+pct(rd,total)+'%"></i></div>'+
+    '<div class="stat small"><span>Antiguo Testamento</span><span>'+rdA+' / '+at+'</span></div><div class="bar"><i style="width:'+pct(rdA,at)+'%"></i></div>'+
+    '<div class="stat small"><span>Nuevo Testamento</span><span>'+(rd-rdA)+' / '+(total-at)+'</span></div><div class="bar"><i style="width:'+pct(rd-rdA,total-at)+'%"></i></div>';
+  const hk = Object.keys(hist).sort().reverse().slice(0,7);
+  $('history').innerHTML = '<span class="eyebrow">Dónde te quedaste cada día</span>' + (hk.length ? hk.map(d => {
+    const h = hist[d]; return '<div class="stat small"><span style="text-transform:capitalize">'+esc(d===today()?'Hoy':fmtDate(d))+'</span><button class="btn" style="min-height:36px;padding:4px 12px" data-h="'+d+'">'+esc(refName(h.b,h.c,h.v))+'</button></div>';
+  }).join('') : '<p class="small muted" style="margin:0">Aquí verás el último versículo leído de cada día.</p>');
+  $('history').querySelectorAll('[data-h]').forEach(el => el.onclick = () => { const h = hist[el.dataset.h]; openChapter(h.b,h.c,h.v); });
+
+  const items = [];
+  Object.keys(study).forEach(k => { const [b,c] = k.split(':').map(Number); const a = study[k].find(x=>x&&x.trim()) || ''; items.push({b,c,v:null,label:'Autoestudio · '+refName(b,c),t:a}); });
+  Object.keys(notes).forEach(k => { const [b,c,v] = k.split(':').map(Number); items.push({b,c,v,label:refName(b,c,v),t:notes[k]}); });
+  items.sort((x,y) => x.b-y.b || x.c-y.c || (x.v||0)-(y.v||0));
+  const nl = $('notesList');
+  nl.innerHTML = items.length ? items.map((n,i) => '<button class="item" data-n="'+i+'"><span class="ref">'+esc(n.label)+'</span><span class="t" style="font-size:16px">'+esc(n.t.length>220?n.t.slice(0,220)+'…':n.t)+'</span></button>').join('')
+    : '<div class="empty">Tus notas aparecerán aquí.<br>Escríbelas al tocar un versículo o en el autoestudio al final de cada capítulo.</div>';
+  nl.querySelectorAll('[data-n]').forEach(el => el.onclick = () => { const n = items[+el.dataset.n]; openChapter(n.b,n.c,n.v||1); });
+}
+
+// ---------- menú lateral de libros ----------
+const SECTIONS = [
+  ['Antiguo Testamento', [['Pentateuco',0,5],['Libros históricos',5,17],['Libros poéticos',17,22],['Profetas mayores',22,27],['Profetas menores',27,39]]],
+  ['Nuevo Testamento', [['Evangelios',39,43],['Historia de la Iglesia',43,44],['Epístolas de Pablo',44,57],['Epístolas generales',57,65],['Profecía',65,66]]]
+];
+function chapButtons(b){
+  return B[b][1].map((_,c) => '<button class="'+(readCh[key(b,c)]?'read ':'')+(b===cur.b&&c===cur.c?'cur':'')+'" data-bc="'+b+','+c+'" aria-label="'+esc(B[b][0])+' capítulo '+(c+1)+'">'+(c+1)+'</button>').join('');
+}
+function buildDrawer(){
+  let h = '';
+  SECTIONS.forEach(([tName, groups], ti) => {
+    const curIn = groups.some(g => cur.b>=g[1] && cur.b<g[2]);
+    h += '<details class="tst"'+(curIn?' open':'')+'><summary>'+tName+'<span class="chev" aria-hidden="true">›</span></summary>';
+    groups.forEach(([gName,from,to]) => {
+      h += '<div class="sect">'+gName+'</div>';
+      for(let b=from;b<to;b++){
+        const isCur = b===cur.b;
+        h += '<details class="bk'+(isCur?' cur':'')+'" data-b="'+b+'"'+(isCur?' open':'')+'><summary>'+esc(B[b][0])+'<span class="n">'+B[b][1].length+' cap.</span><span class="chev" aria-hidden="true">›</span></summary>'+
+             '<div class="chs">'+(isCur?chapButtons(b):'')+'</div></details>';
+      }
+    });
+    h += '</details>';
+  });
+  const body = $('drawerBody'); body.innerHTML = h;
+  body.querySelectorAll('details.bk').forEach(d => d.addEventListener('toggle', () => {
+    if(d.open){
+      const b = +d.dataset.b, box = d.querySelector('.chs');
+      if(!box.children.length) box.innerHTML = chapButtons(b);
+      body.querySelectorAll('details.bk[open]').forEach(o => { if(o!==d) o.open = false; });
+    }
+  }));
+  const c = body.querySelector('details.bk.cur'); if(c) c.scrollIntoView({block:'center'});
+}
+$('drawerBody').addEventListener('click', e => {
+  const btn = e.target.closest('[data-bc]'); if(!btn) return;
+  const [b,c] = btn.dataset.bc.split(',').map(Number); closeDrawer(); openChapter(b,c,1);
+});
+function openDrawer(){
+  if(!B) return;
+  $('drawer').hidden = false; $('drawerBg').hidden = false; $('menuBtn').setAttribute('aria-expanded','true');
+  buildDrawer(); $('drawerClose').focus();
+}
+function closeDrawer(){
+  $('drawer').hidden = true; $('drawerBg').hidden = true; $('menuBtn').setAttribute('aria-expanded','false');
+}
+$('menuBtn').onclick = openDrawer;
+$('drawerClose').onclick = closeDrawer;
+$('drawerBg').onclick = closeDrawer;
+document.addEventListener('keydown', e => { if(e.key==='Escape' && !$('drawer').hidden){ closeDrawer(); $('menuBtn').focus(); } });
+
+// ---------- tamaño de letra ----------
+function applySize(){ document.documentElement.style.setProperty('--read-size', size+'px'); $('sizeLbl').textContent = size+' px'; }
+$('sizeDown').onclick = () => { size = Math.max(15,size-1); save('size',size); applySize(); };
+$('sizeUp').onclick = () => { size = Math.min(28,size+1); save('size',size); applySize(); };
+$('copyApp').onclick = () => copy(appLink(), 'Enlace copiado');
+
+// ---------- navegación ----------
+document.querySelectorAll('.tab').forEach(t => t.onclick = () => {
+  const n = t.dataset.tab;
+  if(n==='leer'){ if(last && view!=='leer') openChapter(last.b,last.c,last.v); else if(view!=='leer') openChapter(0,0,1); else show('libros'); }
+  else show(n);
+});
+$('refBtn').onclick = () => show('libros');
+$('brand').onclick = () => show('inicio');
+
+// ---------- instalación y uso sin conexión ----------
+let installEvt = null;
+window.addEventListener('beforeinstallprompt', e => { e.preventDefault(); installEvt = e; $('installBtn').hidden = false; });
+$('installBtn').onclick = async () => { if(!installEvt) return; installEvt.prompt(); try{ await installEvt.userChoice; }catch(e){} installEvt = null; $('installBtn').hidden = true; };
+window.addEventListener('appinstalled', () => toast('Santa Biblia quedó instalada'));
+if('serviceWorker' in navigator){ window.addEventListener('load', () => navigator.serviceWorker.register('sw.js').catch(()=>{})); }
+
+// ---------- carga ----------
+applySize();
+fetch('biblia.json').then(r => { if(!r.ok) throw new Error(r.status); return r.json(); }).then(d => {
+  B = d; $('loading').hidden = true;
+  if(last && B[last.b]) { cur = {b:last.b,c:last.c}; $('refBtn').textContent = refName(last.b,last.c)+' ▾'; }
+  show('inicio');
+}).catch(() => {
+  $('loading').innerHTML = '<p>No se pudo cargar el texto bíblico. Revisa tu conexión a internet y vuelve a abrir la app.</p>';
+});
+})();
+</script>
+
+</body>
+</html>
