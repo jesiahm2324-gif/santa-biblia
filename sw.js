@@ -1,6 +1,6 @@
 // Santa Biblia: guarda la app y el texto bíblico para leer sin conexión.
 // Al publicar cambios en la app, sube el número de versión para que los teléfonos descarguen lo nuevo.
-const VERSION = 'santa-biblia-v1';
+const VERSION = 'santa-biblia-v2';
 const FONTS = 'santa-biblia-fuentes';
 const ARCHIVOS = [
   './',

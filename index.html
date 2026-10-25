@@ -83,6 +83,15 @@ h1,h2,h3{text-wrap:balance; margin:0}
 .continue .eyebrow{color:rgba(255,243,227,.8)}
 .continue .quote cite{color:var(--gold)}
 .continue .btn{background:var(--gold); border-color:var(--gold); color:#2A1A1C}
+.opts{background:var(--surface); border:1px solid var(--line); border-radius:16px; overflow:hidden}
+.opt + .opt{border-top:1px solid var(--line)}
+.opt summary{list-style:none; display:flex; align-items:center; gap:8px; min-height:52px; padding:0 18px; font-weight:700; cursor:pointer}
+.opt summary::-webkit-details-marker{display:none}
+.opt summary .chev{margin-left:auto; font-size:20px; color:var(--muted); transition:transform .2s}
+.opt[open] summary .chev{transform:rotate(90deg)}
+.opt-body{display:flex; flex-direction:column; gap:10px; padding:0 18px 18px}
+.opt-body ol{margin:0; padding-left:20px; line-height:1.6}
+@media (prefers-reduced-motion: reduce){ .opt summary .chev{transition:none} }
 details.card summary{font-weight:700; cursor:pointer; min-height:28px}
 details.card ol{margin:6px 0 0; padding-left:20px; line-height:1.6}
 
@@ -211,30 +220,38 @@ nav.tabs{position:fixed; left:0; right:0; bottom:0; z-index:20; background:var(-
     </div>
     <div class="card continue" id="continueCard"></div>
     <div class="card" id="votdCard"></div>
-    <div class="card">
-      <span class="eyebrow">Comparte la app</span>
-      <p class="small" style="margin:0">Envía el enlace por WhatsApp. Quien lo abra puede leer y agregarla a su pantalla de inicio, sin descargar nada ni pagar licencia.</p>
-      <div class="row">
-        <a class="btn wa" id="shareApp" href="#" target="_blank" rel="noopener">Compartir por WhatsApp</a>
-        <button class="btn" id="copyApp">Copiar enlace</button>
-      </div>
-    </div>
-    <details class="card">
-      <summary>Instalar en tu teléfono</summary>
-      <button class="btn primary" id="installBtn" hidden>Instalar la app</button>
-      <p class="small" style="margin:0"><b>Android (Chrome):</b></p>
-      <ol class="small"><li>Abre el enlace en Chrome.</li><li>Toca el menú ⋮ arriba a la derecha.</li><li>Elige «Agregar a pantalla de inicio».</li></ol>
-      <p class="small" style="margin:0"><b>iPhone (Safari):</b></p>
-      <ol class="small"><li>Abre el enlace en Safari.</li><li>Toca el botón Compartir.</li><li>Elige «Agregar a inicio».</li></ol>
-      <p class="small muted" style="margin:0">Tus favoritos, notas y avance se guardan en este teléfono y en este navegador.</p>
-    </details>
-    <div class="card">
-      <span class="eyebrow">Tamaño de letra</span>
-      <div class="size-row">
-        <button class="btn" id="sizeDown" aria-label="Letra más pequeña">A−</button>
-        <span id="sizeLbl" class="small" style="font-variant-numeric:tabular-nums">19 px</span>
-        <button class="btn" id="sizeUp" aria-label="Letra más grande">A+</button>
-      </div>
+    <div class="opts">
+      <details class="opt">
+        <summary>Compartir la app<span class="chev" aria-hidden="true">›</span></summary>
+        <div class="opt-body">
+          <p class="small" style="margin:0">Envía el enlace por WhatsApp. Quien lo abra puede leer y agregarla a su pantalla de inicio, sin descargar nada ni pagar licencia.</p>
+          <div class="row">
+            <a class="btn wa" id="shareApp" href="#" target="_blank" rel="noopener">Compartir por WhatsApp</a>
+            <button class="btn" id="copyApp">Copiar enlace</button>
+          </div>
+        </div>
+      </details>
+      <details class="opt">
+        <summary>Instalar en tu teléfono<span class="chev" aria-hidden="true">›</span></summary>
+        <div class="opt-body">
+          <button class="btn primary" id="installBtn" hidden>Instalar la app</button>
+          <p class="small" style="margin:0"><b>Android (Chrome):</b></p>
+          <ol class="small"><li>Abre el enlace en Chrome.</li><li>Toca el menú ⋮ arriba a la derecha.</li><li>Elige «Instalar app» o «Agregar a pantalla de inicio».</li></ol>
+          <p class="small" style="margin:0"><b>iPhone (Safari):</b></p>
+          <ol class="small"><li>Abre el enlace en Safari.</li><li>Toca el botón Compartir.</li><li>Elige «Agregar a inicio».</li></ol>
+          <p class="small muted" style="margin:0">Tus favoritos, notas y avance se guardan en este teléfono.</p>
+        </div>
+      </details>
+      <details class="opt">
+        <summary>Tamaño de letra <span class="small muted" id="sizeLbl" style="font-weight:400;font-variant-numeric:tabular-nums">19 px</span><span class="chev" aria-hidden="true">›</span></summary>
+        <div class="opt-body">
+          <div class="size-row">
+            <button class="btn" id="sizeDown" aria-label="Letra más pequeña">A−</button>
+            <span class="small muted">Ajusta el texto de lectura</span>
+            <button class="btn" id="sizeUp" aria-label="Letra más grande">A+</button>
+          </div>
+        </div>
+      </details>
     </div>
     <p class="small muted" style="text-align:center;margin:0">Texto: Reina-Valera 1909, de dominio público.</p>
   </section>
