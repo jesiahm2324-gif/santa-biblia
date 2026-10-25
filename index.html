@@ -22,7 +22,8 @@ body{margin:0; font:14px/1.4 system-ui,-apple-system,"Segoe UI",sans-serif}
 img{max-width:100%}
 [hidden]{display:none!important}
 </style>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Literata:ital,opsz,wght@0,7..72,400;0,7..72,600;1,7..72,400&family=Source+Sans+3:wght@400;600;700&display=swap">
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Literata:ital,opsz,wght@0,7..72,400;0,7..72,600;1,7..72,400&family=Source+Sans+3:wght@400;600;700&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Literata:ital,opsz,wght@0,7..72,400;0,7..72,600;1,7..72,400&family=Source+Sans+3:wght@400;600;700&display=swap"></noscript>
 <style>
 /* Lector de una columna: cabecera vino fija arriba, texto en pergamino, navegación inferior de cinco secciones */
 :root{
@@ -896,12 +897,32 @@ if('serviceWorker' in navigator){ window.addEventListener('load', () => navigato
 
 // ---------- carga ----------
 applySize();
-fetch('biblia.json').then(r => { if(!r.ok) throw new Error(r.status); return r.json(); }).then(d => {
+const DATOS = 'santa-biblia-datos-rv1909';
+async function loadBible(){
+  // 1) Copia guardada en el teléfono: abre al instante.
+  try{
+    if(window.caches){
+      const hit = await caches.match('biblia.json', {ignoreSearch:true});
+      if(hit) return await hit.json();
+    }
+  }catch(e){}
+  // 2) Primera vez: descarga una sola vez y la guarda para las próximas.
+  const r = await fetch('biblia.json');
+  if(!r.ok) throw new Error(r.status);
+  try{ if(window.caches){ const c = await caches.open(DATOS); await c.put('biblia.json', r.clone()); } }catch(e){}
+  return r.json();
+}
+const slowT = setTimeout(() => {
+  const l = $('loading'); if(!l.hidden) l.querySelector('p').textContent = 'Descargando la Biblia por primera vez… Esto solo pasa una vez; después abrirá al instante, incluso sin internet.';
+}, 4000);
+loadBible().then(d => {
+  clearTimeout(slowT);
   B = d; $('loading').hidden = true;
   if(last && B[last.b]) { cur = {b:last.b,c:last.c}; $('refBtn').textContent = refName(last.b,last.c)+' ▾'; }
   show('inicio');
 }).catch(() => {
-  $('loading').innerHTML = '<p>No se pudo cargar el texto bíblico. Revisa tu conexión a internet y vuelve a abrir la app.</p>';
+  clearTimeout(slowT);
+  $('loading').innerHTML = '<p>No se pudo cargar el texto bíblico. Revisa tu conexión a internet y vuelve a abrir la app.</p><button class="btn primary" onclick="location.reload()">Intentar de nuevo</button>';
 });
 })();
 </script>
