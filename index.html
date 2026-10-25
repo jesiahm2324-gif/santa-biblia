@@ -189,7 +189,7 @@ nav.tabs{position:fixed; left:0; right:0; bottom:0; z-index:20; background:var(-
 .drawer .chs button.cur{border:2px solid var(--wine-text)}
 @media (prefers-reduced-motion: reduce){ .drawer summary .chev{transition:none} }
 @media (max-width:440px){ .brand span{font-size:16px; letter-spacing:1px} .brand svg{width:32px; height:32px} .ref-btn{padding:8px 12px; font-size:14px} }
-@media (max-width:370px){ .brand span{display:none} }
+@media (max-width:340px){ .brand span{display:none} .brand svg{display:block} }
 /* Configuración */
 .vt{font-family:var(--f-display); color:var(--wine-text); font-size:24px}
 .bg-grid{display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:10px}
@@ -220,6 +220,50 @@ nav.tabs{position:fixed; left:0; right:0; bottom:0; z-index:20; background:var(-
 .scenes{display:grid; grid-template-columns:repeat(5,minmax(0,1fr)); gap:8px}
 .scene{height:52px; border-radius:10px; border:1px solid var(--line)}
 .scene[aria-pressed="true"]{outline:3px solid var(--wine-text); outline-offset:2px}
+/* Discipulado */
+.search-btn{background:none; border:0; color:var(--head-fg); width:44px; height:44px; display:grid; place-items:center; border-radius:10px; flex:none; margin-right:-6px}
+.disc-quote{margin:0; font-family:var(--f-read); font-style:italic; font-size:15px; line-height:1.55; color:var(--muted)}
+.route{display:flex; align-items:center; gap:12px; background:var(--surface); border:1px solid var(--line); border-radius:14px; padding:12px 14px; text-align:left; width:100%; color:var(--fg)}
+.route .ic{width:46px; height:46px; border-radius:50%; background:var(--head); color:var(--gold); display:grid; place-items:center; flex:none}
+.route .tx{flex:1; display:flex; flex-direction:column; gap:3px; min-width:0}
+.route .tx b{font-size:17px}
+.route .tx small{font-size:13px; color:var(--muted)}
+.mini-bar{display:flex; align-items:center; gap:8px; margin-top:4px}
+.mini-bar span:first-child{flex:1; height:6px; border-radius:3px; background:var(--chip); overflow:hidden}
+.mini-bar i{display:block; height:100%; background:var(--gold)}
+.mini-bar span:last-child{font-size:12px; font-weight:600; color:var(--muted); font-variant-numeric:tabular-nums; white-space:nowrap}
+.disc-head{background:var(--head); color:var(--head-fg); border-radius:16px; padding:16px; display:flex; flex-direction:column; gap:8px}
+.disc-head .eyebrow{color:rgba(255,243,227,.8)}
+.disc-head h2{font-family:var(--f-display); font-size:24px; letter-spacing:.5px; line-height:1.25}
+.disc-head p{margin:0; font-family:var(--f-read); font-style:italic; font-size:15px; line-height:1.5; color:#F3E3C8}
+.disc-head .mini-bar span:first-child{background:rgba(255,243,227,.25)}
+.disc-head .mini-bar span:last-child{color:var(--head-fg)}
+.back-link{align-self:flex-start; background:none; border:0; color:var(--wine-text); font-weight:700; display:flex; align-items:center; gap:6px; min-height:44px; padding:0}
+.les{display:flex; align-items:center; gap:12px; background:var(--surface); border:1px solid var(--line); border-radius:12px; padding:10px 12px; min-height:58px; text-align:left; width:100%; color:var(--fg)}
+.les.done{background:var(--chip)}
+.les.cur{border:2px solid var(--wine-text); padding:9px 11px}
+.les .num{width:30px; height:30px; border-radius:50%; display:grid; place-items:center; font-weight:700; font-size:14px; flex:none; background:var(--chip); color:var(--wine-text); font-variant-numeric:tabular-nums}
+.les.done .num{background:#1E7A45; color:#fff}
+.les.cur .num{background:var(--head); color:var(--head-fg)}
+.les .tx{flex:1; display:flex; flex-direction:column; gap:2px; min-width:0}
+.les .tx b{font-size:15px}
+.les .tx small{font-size:13px; color:var(--muted)}
+.les .go{font-size:12px; font-weight:700; color:var(--wine-text)}
+.step{display:flex; flex-direction:column; gap:8px}
+.step h3{margin:0; font-size:12px; font-weight:700; letter-spacing:1.6px; text-transform:uppercase; color:var(--muted)}
+.passage{background:var(--surface); border:1px solid var(--line); border-radius:14px; padding:16px; display:flex; flex-direction:column; gap:6px}
+.passage strong{color:var(--wine-text); font-size:15px}
+.passage p{margin:0; font-family:var(--f-read); font-size:var(--read-size); line-height:1.7}
+.passage sup{font-family:var(--f-ui); font-size:.6em; font-weight:700; color:var(--wine-text); margin-right:3px; vertical-align:.45em}
+.qs{background:var(--surface); border:1px solid var(--line); border-radius:14px; padding:16px; margin:0; padding-left:36px; display:flex; flex-direction:column; gap:12px; font-size:16px; line-height:1.5}
+.memo{background:var(--head); color:var(--head-fg); border-radius:14px; padding:16px; display:flex; flex-direction:column; gap:6px}
+.memo p{margin:0; font-family:var(--f-read); font-size:18px; line-height:1.6}
+.memo span{font-weight:700; color:var(--gold); font-size:14px}
+.practice{background:var(--surface); border:1px solid var(--line); border-radius:14px; padding:16px; font-size:16px; line-height:1.5}
+#discNote{width:100%; box-sizing:border-box; min-height:110px; border-radius:12px; border:1px solid var(--line); background:var(--surface); padding:12px; font-family:var(--f-read); font-size:16px; color:var(--fg); resize:vertical}
+.two{display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:10px}
+.two .btn{padding-inline:10px}
+@media (max-width:440px){ .brand svg{display:none} .brand span{font-size:15px} }
 .loading{display:flex; flex-direction:column; align-items:center; gap:12px; padding:60px 0; color:var(--muted); text-align:center}
 @media (prefers-reduced-motion: no-preference){ .loading svg{animation:glow 1.8s ease-in-out infinite} @keyframes glow{50%{opacity:.55}} }
 </style>
@@ -243,6 +287,7 @@ nav.tabs{position:fixed; left:0; right:0; bottom:0; z-index:20; background:var(-
     <button class="menu-btn" id="menuBtn" aria-label="Abrir libros de la Biblia" aria-expanded="false" aria-controls="drawer"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg></button>
     <button class="brand" id="brand" aria-label="Ir al inicio"><svg aria-hidden="true"><use href="#logo"></use></svg><span>Santa Biblia</span></button>
     <button class="ref-btn" id="refBtn" aria-label="Elegir libro y capítulo">Génesis 1 ▾</button>
+    <button class="search-btn" id="searchBtn" aria-label="Buscar en la Biblia"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></svg></button>
   </div>
 </header>
 
@@ -256,6 +301,7 @@ nav.tabs{position:fixed; left:0; right:0; bottom:0; z-index:20; background:var(-
       <p class="muted small">Lámpara es á mis pies tu palabra · Salmo 119:105</p>
     </div>
     <div class="card continue" id="continueCard"></div>
+    <div class="card" id="discCard"></div>
     <div class="card" id="votdCard"></div>
     <div class="opts">
       <details class="opt">
@@ -321,6 +367,8 @@ nav.tabs{position:fixed; left:0; right:0; bottom:0; z-index:20; background:var(-
     <div class="list" id="favList"></div>
   </section>
 
+  <section class="view" id="v-disc" hidden><div id="discBody" style="display:flex;flex-direction:column;gap:16px"></div></section>
+
   <section class="view" id="v-config" hidden>
     <div style="display:flex;align-items:center;gap:10px"><button class="btn" id="cfgBack" aria-label="Volver al inicio">← Inicio</button><h2 class="vt">Configuración</h2></div>
     <span class="eyebrow">Estilo de fondo</span>
@@ -352,7 +400,7 @@ nav.tabs{position:fixed; left:0; right:0; bottom:0; z-index:20; background:var(-
   <div class="tabs-in">
     <button class="tab" data-tab="inicio"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 10.5 12 3l9 7.5V21h-6v-6H9v6H3z"/></svg>Inicio</button>
     <button class="tab" data-tab="leer"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 5c3-1.5 6.5-1.5 10 1 3.5-2.5 7-2.5 10-1v14c-3-1.5-6.5-1.5-10 1-3.5-2.5-7-2.5-10-1z"/><path d="M12 6v14"/></svg>Leer</button>
-    <button class="tab" data-tab="buscar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></svg>Buscar</button>
+    <button class="tab" data-tab="disc"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="8" cy="8" r="3"/><circle cx="17" cy="9" r="2.5"/><path d="M2 20c0-3.5 2.7-6 6-6s6 2.5 6 6M14 20c0-2.5 1.5-4.5 3.5-4.5S21 17.5 21 20"/></svg>Discipulado</button>
     <button class="tab" data-tab="favs"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><path d="m12 3 2.8 5.7 6.2.9-4.5 4.4 1 6.2L12 17.3 6.5 20.2l1-6.2L3 9.6l6.2-.9z"/></svg>Favoritos</button>
     <button class="tab" data-tab="estudio"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20h4L19 9l-4-4L4 16z"/><path d="m13.5 6.5 4 4"/></svg>Estudio</button>
   </div>
@@ -430,7 +478,7 @@ function copy(text, ok){
 // ---------- vistas ----------
 function show(v){
   view = v;
-  ['inicio','libros','leer','buscar','favs','estudio','config'].forEach(n => $('v-'+n).hidden = n!==v);
+  ['inicio','libros','leer','buscar','favs','estudio','config','disc'].forEach(n => $('v-'+n).hidden = n!==v);
   document.querySelectorAll('.tab').forEach(t => {
     const on = t.dataset.tab===v || (v==='libros' && t.dataset.tab==='leer');
     if(on) t.setAttribute('aria-current','page'); else t.removeAttribute('aria-current');
@@ -440,6 +488,7 @@ function show(v){
   if(v==='estudio') renderStudy();
   if(v==='libros') renderBooks();
   if(v==='config') renderConfig();
+  if(v==='disc') renderDisc();
   if(v!=='leer') window.scrollTo(0,0);
 }
 
@@ -475,6 +524,7 @@ function renderHome(){
   $('votdCard').innerHTML = '<span class="eyebrow">Versículo del día</span><p class="quote" style="margin:0">'+esc(verse(vb,vc-1,vv))+'<cite>'+esc(refName(vb,vc-1,vv))+'</cite></p>'+
     '<div class="row"><button class="btn" id="votdOpen">Leer el capítulo</button></div>';
   $('votdOpen').onclick = () => openChapter(vb,vc-1,vv);
+  renderDiscCard();
   $('shareApp').href = wa('Te comparto la Santa Biblia (Reina-Valera 1909): lectura, favoritos y autoestudio. Ábrela aquí: '+appLink());
 }
 
@@ -872,6 +922,104 @@ $('shareImg').onclick = () => {
   }
 };
 
+// ---------- discipulado ----------
+const DISC = [{"id":"mujeres","name":"Mujeres","key":[19,31,30],"hint":"La mujer que teme á Jehová · Proverbios 31","lessons":[{"t":"Creada a imagen de Dios","p":[[0,1,26,31]],"m":[0,1,27],"q":["¿Qué dice el pasaje sobre cómo y a imagen de quién fueron creados el varón y la hembra?","Según el versículo 31, ¿cómo vio Dios todo lo que había hecho?","¿Cómo cambia tu manera de verte a ti misma saber que fuiste creada a imagen de Dios?"],"a":"Cada mañana de esta semana, da gracias a Dios por haberte creado, y trata a cada persona que encuentres como alguien hecho a su imagen."},{"t":"Una mujer que teme a Jehová","p":[[19,31,10,31]],"m":[19,31,30],"q":["¿Qué virtudes de esta mujer te llaman más la atención?","Según el versículo 30, ¿qué es lo que verdaderamente será alabado?","¿En qué área de tu vida diaria quieres mostrar más el temor de Jehová?"],"a":"Elige una virtud del pasaje, pídele a Dios en oración que la forme en ti y ponla en práctica en tu casa o trabajo esta semana."},{"t":"Sentada a los pies de Jesús","p":[[41,10,38,42]],"m":[41,10,42],"q":["¿Qué hacía María y qué hacía Marta mientras Jesús estaba en la casa? (vv. 39-40)","Jesús dice que Marta estaba «turbada» con muchas cosas. ¿Qué cosas te distraen hoy de oír su palabra?","Según el versículo 42, ¿qué escogió María y qué promesa le da Jesús?"],"a":"Cada día, antes de empezar tus tareas, aparta un tiempo sin distracciones para leer un capítulo y orar. Anota aquí lo que el Señor te enseña."},{"t":"Anna: fe que ora y espera","p":[[8,1,1,20]],"m":[8,1,27],"q":["¿Cuál era la aflicción de Anna y qué hizo con ella?","¿Cómo describe el pasaje la manera en que Anna oró delante de Jehová? (vv. 10-15)","¿Qué carga necesitas derramar hoy delante de Dios en oración?"],"a":"Escribe en tus notas una petición que llevas en el corazón y ora por ella cada día de esta semana, confiando en el Señor."},{"t":"Ester: valentía para la hora de Dios","p":[[16,4,10,17]],"m":[16,4,14],"q":["¿Qué riesgo corría Ester al presentarse ante el rey sin ser llamada?","¿Qué le dijo Mardochêo para animarla y qué pidió Ester antes de presentarse?","¿En qué situación te está llamando Dios a actuar con valentía?"],"a":"Antes de una decisión difícil esta semana, aparta tiempo para orar y, si te es posible, ayunar, como lo hizo Ester."},{"t":"La belleza que Dios estima","p":[[59,3,1,6]],"m":[59,3,4],"q":["Según el pasaje, ¿dónde debe estar el verdadero adorno?","¿Qué es un «espíritu agradable y pacífico» y por qué es de grande estima delante de Dios?","¿Cómo puede tu conducta hablar de Cristo a los que te rodean?"],"a":"Esta semana, cuando sientas impaciencia o enojo, detente, ora en silencio y responde con mansedumbre."},{"t":"Una fe que pasa de generación en generación","p":[[55,2,3,5],[54,1,5,5]],"m":[54,1,5],"q":["¿Qué enseña Pablo a las mujeres mayores y qué deben enseñar a las más jóvenes?","¿Qué dice Pablo de la fe de Loida y de Eunice?","¿A quién puedes acompañar o animar en la fe?"],"a":"Escoge a una mujer más joven en la fe, o a una hija, nieta o sobrina, y busca un momento esta semana para orar con ella o compartirle un versículo."},{"t":"Dorcas: fiel en las buenas obras","p":[[43,9,36,42]],"m":[43,9,36],"q":["¿Cómo describe el pasaje a Dorcas y qué mostraron las viudas a Pedro?","¿Qué sucedió en Joppe después del milagro? (v. 42)","¿Qué buena obra puedes hacer por alguien necesitado esta semana?"],"a":"Haz una obra concreta de ayuda por alguien necesitado esta semana, sin buscar reconocimiento."}]},{"id":"hombres","name":"Hombres","key":[5,1,9],"hint":"Esfuérzate y sé valiente · Josué 1","lessons":[{"t":"Llamado a seguir a Cristo","p":[[40,1,14,20]],"m":[40,1,17],"q":["¿Qué predicaba Jesús según los versículos 14 y 15?","¿Cómo respondieron Simón, Andrés, Jacobo y Juan al llamado de Jesús?","¿Qué cosas te cuesta dejar para seguir a Cristo de todo corazón?"],"a":"Comparte esta semana con un amigo o compañero lo que significa para ti seguir a Jesús."},{"t":"Esfuérzate y sé valiente","p":[[5,1,1,9]],"m":[5,1,9],"q":["¿Qué promesas le dio Jehová a Josué?","Según el versículo 8, ¿qué debía hacer Josué con el libro de la ley y qué resultado tendría?","¿Qué temor necesitas enfrentar confiando en que Dios está contigo?"],"a":"Lee y medita un pasaje de la Biblia de mañana y de noche esta semana, como se le mandó a Josué."},{"t":"José: integridad en lo secreto","p":[[0,39,1,12]],"m":[0,39,9],"q":["¿Por qué prosperaba José en casa de Potiphar?","¿Cómo respondió José a la tentación y qué razón dio? (v. 9)","¿Qué límites necesitas poner para guardar tu integridad cuando nadie te ve?"],"a":"Identifica una situación que te expone a la tentación y toma una decisión concreta para alejarte de ella, como José, que huyó."},{"t":"Yo y mi casa serviremos a Jehová","p":[[5,24,14,15],[4,6,4,9]],"m":[5,24,15],"q":["¿Qué decisión pidió Josué al pueblo y cuál fue la suya?","Según Deuteronomio 6:6-7, ¿dónde deben estar las palabras de Dios y cuándo se deben enseñar?","¿Qué paso puedes dar para guiar a tu casa en el servicio a Dios?"],"a":"Reúne a tu familia una vez esta semana para leer un pasaje bíblico y orar juntos."},{"t":"Llamados a santificación","p":[[51,4,1,8]],"m":[51,4,7],"q":["Según el versículo 3, ¿cuál es la voluntad de Dios para nosotros?","¿Qué enseña el pasaje sobre tener el cuerpo «en santificación y honor»?","¿Qué hábitos necesitas cambiar para vivir en pureza?"],"a":"Busca a un hermano maduro en la fe con quien puedas orar y rendir cuentas sobre tu pureza."},{"t":"Trabajar como para el Señor","p":[[50,3,17,24]],"m":[50,3,23],"q":["Según el versículo 17, ¿cómo debemos hacer todo lo que hacemos?","¿Qué instrucciones da el pasaje a casadas, maridos, hijos, padres y siervos?","¿Cómo cambiaría tu forma de trabajar si lo hicieras como para el Señor?"],"a":"Esta semana haz tu trabajo con excelencia y sin quejas, recordando que sirves a Cristo."},{"t":"David: arrepentimiento y restauración","p":[[18,51,0,0]],"m":[18,51,10],"q":["¿Qué le pide David a Dios en los primeros versículos?","¿Qué reconoce David acerca de su pecado?","Según el versículo 17, ¿qué sacrificio no desprecia Dios?"],"a":"Dedica un tiempo a solas con Dios para confesar tu pecado con sinceridad y recibir su perdón."},{"t":"Líder que sirve como Cristo","p":[[42,13,1,17]],"m":[40,10,45],"q":["¿Qué hizo Jesús con sus discípulos y por qué se resistía Pedro?","Según los versículos 14 y 15, ¿qué ejemplo nos dejó Jesús?","¿A quién puedes servir con humildad esta semana, en tu casa, iglesia o trabajo?"],"a":"Haz un servicio humilde y práctico en tu casa o en tu iglesia esta semana, sin esperar nada a cambio."}]},{"id":"jovenes","name":"Jóvenes","key":[20,12,1],"hint":"Acuérdate de tu Criador · Eclesiastés 12","lessons":[{"t":"Acuérdate de tu Criador","p":[[20,12,1,7]],"m":[20,12,1],"q":["¿Por qué el pasaje llama a acordarse del Criador en los días de la juventud?","¿Qué imágenes usa el pasaje para describir la vejez y el fin de la vida?","¿Cómo puedes poner a Dios primero ahora, en esta etapa de tu vida?"],"a":"Comienza cada día de esta semana con unos minutos de oración antes de usar el teléfono o las redes."},{"t":"Sé ejemplo de los fieles","p":[[53,4,12,16]],"m":[53,4,12],"q":["¿En qué seis áreas debía Timoteo ser ejemplo?","¿En qué debía ocuparse Timoteo según los versículos 13 al 15?","¿En cuál de esas áreas quieres crecer y cómo?"],"a":"Escoge una de las seis áreas (palabra, conversación, caridad, espíritu, fe o limpieza) y trabaja en ella toda la semana."},{"t":"Nueva criatura en Cristo","p":[[46,5,14,21]],"m":[46,5,17],"q":["Según el versículo 15, ¿para quién viven ya los que creen en Cristo?","¿Qué significa ser «nueva criatura»?","¿Qué «cosas viejas» quieres dejar atrás con la ayuda de Dios?"],"a":"Escribe en tus notas tres cosas que han cambiado en tu vida desde que conoces a Cristo, y da gracias a Dios por ellas."},{"t":"Daniel: firme en lo que cree","p":[[26,1,1,21]],"m":[26,1,8],"q":["¿Qué presión enfrentaban Daniel y sus compañeros en Babilonia?","¿Qué propuso Daniel en su corazón y cómo lo pidió?","¿Qué te pide Dios que no negocies, aunque los demás lo hagan?"],"a":"Define un compromiso con Dios que mantendrás esta semana aunque tus amigos no lo entiendan."},{"t":"Huye de los deseos juveniles","p":[[54,2,19,26]],"m":[54,2,22],"q":["¿Qué significa ser un «vaso para honra» según los versículos 20 y 21?","Según el versículo 22, ¿de qué debemos huir y qué debemos seguir?","¿Con quiénes te rodeas para seguir al Señor de puro corazón?"],"a":"Identifica una influencia que te aleja de Dios, sea un contenido, un lugar o un hábito, y apártate de ella esta semana."},{"t":"Amistades que edifican","p":[[19,13,20,20],[8,18,1,4]],"m":[19,13,20],"q":["Según Proverbios 13:20, ¿qué le pasa al que anda con los sabios y al que se allega a los necios?","¿Cómo describe el pasaje la amistad entre Jonathán y David?","¿Tus amistades te acercan o te alejan de Dios?"],"a":"Agradece esta semana a un amigo que te anima en la fe, y ora por tus amistades por nombre."},{"t":"La buena voluntad de Dios","p":[[44,12,1,2],[19,3,5,6]],"m":[44,12,2],"q":["¿Qué nos ruega Pablo que hagamos con nuestros cuerpos?","Según Romanos 12:2, ¿cómo llegamos a experimentar la voluntad de Dios?","Según Proverbios 3:5-6, ¿qué promete Dios a quien lo reconoce en todos sus caminos?"],"a":"Presenta a Dios en oración una decisión que tengas por delante y pídele dirección antes de decidir."},{"t":"Sal y luz del mundo","p":[[39,5,13,16]],"m":[39,5,16],"q":["¿Qué quiso decir Jesús al llamarnos «sal de la tierra» y «luz del mundo»?","¿Para qué deben ver los demás nuestras buenas obras?","¿En qué lugar de tu vida diaria necesitas alumbrar más para Cristo?"],"a":"Comparte esta semana un versículo o tu testimonio con un compañero o amigo que no conoce a Cristo."}]},{"id":"adolescentes","name":"Adolescentes","key":[41,2,52],"hint":"Crecía en sabiduría y en gracia · Lucas 2","lessons":[{"t":"Dios me conoce y me formó","p":[[18,139,1,18]],"m":[18,139,14],"q":["¿Qué cosas de ti conoce Dios según los primeros versículos?","¿Hay algún lugar donde podamos escondernos de Dios? ¿Qué dice el salmo?","¿Cómo te ayuda saber que Dios te formó con cuidado?"],"a":"Lee el versículo 14 en voz alta cada mañana de esta semana y da gracias a Dios por cómo te hizo."},{"t":"Honra a tus padres","p":[[48,6,1,4]],"m":[48,6,1],"q":["¿Qué manda Dios a los hijos en este pasaje?","¿Qué promesa acompaña al mandamiento de honrar a padre y madre?","¿De qué manera práctica puedes honrar a tus padres esta semana?"],"a":"Ayuda en casa sin que te lo pidan y da gracias a tus padres por algo concreto."},{"t":"Jesús crecía","p":[[41,2,41,52]],"m":[41,2,52],"q":["¿Dónde encontraron José y María a Jesús y qué estaba haciendo?","¿Cómo se portó Jesús con sus padres al volver a Nazaret? (v. 51)","Según el versículo 52, ¿en qué cuatro cosas crecía Jesús? ¿En cuál quieres crecer tú?"],"a":"Escoge una de esas cuatro áreas y ponte una meta pequeña para esta semana."},{"t":"Guarda tu corazón","p":[[19,4,20,27]],"m":[19,4,23],"q":["¿Qué nos pide el pasaje que hagamos con las palabras de Dios?","Según el versículo 23, ¿por qué es tan importante guardar el corazón?","¿Qué cosas ves o escuchas que no te ayudan a guardar tu corazón?"],"a":"Revisa lo que ves y escuchas esta semana (redes, música, videos) y deja una cosa que no agrade a Dios."},{"t":"Palabras que dan gracia","p":[[58,3,1,12]],"m":[48,4,29],"q":["¿Con qué cosas compara Santiago a la lengua?","¿Qué contradicción señalan los versículos 9 y 10?","¿Cómo puedes usar tus palabras para edificar a otros?"],"a":"Cada día de esta semana di una palabra de ánimo a alguien, en persona o por mensaje."},{"t":"¿Con qué limpiará el joven su camino?","p":[[18,119,9,16]],"m":[18,119,9],"q":["Según el versículo 9, ¿cómo puede el joven limpiar su camino?","Según el versículo 11, ¿qué hace el salmista con los dichos de Dios y para qué?","¿Qué versículo te gustaría guardar en tu corazón esta semana?"],"a":"Memoriza el versículo 11 y repítelo cuando enfrentes una tentación."},{"t":"Dios da la salida en la tentación","p":[[45,10,12,13]],"m":[45,10,13],"q":["¿Qué advertencia da el versículo 12?","¿Qué promete Dios a los que son tentados?","¿Cuál es «la salida» que Dios te da en una tentación que enfrentas?"],"a":"Piensa en una tentación frecuente y planea de antemano tu salida: a quién llamar, a dónde ir o qué hacer."},{"t":"David: en el nombre de Jehová","p":[[8,17,32,50]],"m":[8,17,45],"q":["Según el versículo 37, ¿en quién confiaba David para enfrentar a Goliath?","¿Qué diferencia hay entre las armas de Goliath y aquello en lo que confiaba David? (v. 45)","¿Qué «gigante» enfrentas hoy y cómo puedes enfrentarlo confiando en Dios?"],"a":"Escribe en tus notas el «gigante» que enfrentas y ora cada día por él, confiando en el Señor."}]},{"id":"matrimonio","name":"Matrimonio","key":[20,4,12],"hint":"Cordón de tres dobleces · Eclesiastés 4","lessons":[{"t":"El diseño de Dios","p":[[0,2,18,25]],"m":[0,2,24],"q":["¿Qué dijo Dios en el versículo 18 y qué hizo al respecto?","¿Qué significa dejar padre y madre y ser una sola carne?","¿Cómo pueden honrar juntos el diseño de Dios para su matrimonio?"],"a":"Separen un tiempo esta semana, solo los dos, para dar gracias a Dios el uno por el otro."},{"t":"Cordón de tres dobleces","p":[[20,4,9,12]],"m":[20,4,12],"q":["¿Qué ventajas de estar juntos menciona el pasaje?","¿Qué representa para ustedes el «cordón de tres dobleces»?","¿Cómo pueden poner a Dios en el centro de su relación?"],"a":"Oren juntos al menos tres veces esta semana."},{"t":"Como Cristo amó a la iglesia","p":[[48,5,21,33]],"m":[48,5,25],"q":["¿Qué pide el pasaje a las casadas y qué pide a los maridos?","Según el versículo 25, ¿cómo amó Cristo a la iglesia?","¿Qué paso concreto puede dar cada uno para obedecer este pasaje?"],"a":"Cada uno escriba una forma de amar o respetar mejor a su cónyuge y póngala en práctica esta semana."},{"t":"La caridad es sufrida","p":[[45,13,1,8]],"m":[45,13,4],"q":["¿Por qué dice Pablo que sin caridad nada somos?","¿Qué características de la caridad enumeran los versículos 4 al 7?","¿Cuál de ellas necesitan practicar más en su matrimonio?"],"a":"Lean juntos los versículos 4 al 7 cada noche y escojan una característica para vivir al día siguiente."},{"t":"Hablar con verdad y perdonar","p":[[48,4,25,32]],"m":[48,4,32],"q":["¿Qué enseña el versículo 26 sobre el enojo?","Según el versículo 31, ¿qué cosas deben quitarse de nosotros?","¿Hay algo que necesiten perdonarse, como Dios los perdonó en Cristo?"],"a":"Antes de dormir, cada día de esta semana, resuelvan cualquier ofensa y pídanse perdón si hace falta."},{"t":"Honrarse y orar juntos","p":[[59,3,7,12]],"m":[59,3,7],"q":["¿Qué pide el versículo 7 a los maridos y por qué?","¿Qué actitudes pide el pasaje a todos en los versículos 8 y 9?","¿Cómo puede su forma de tratarse ayudar a que sus oraciones no sean impedidas?"],"a":"Cada uno honre esta semana a su cónyuge con palabras de aprecio delante de otros."},{"t":"Honroso es el matrimonio","p":[[57,13,4,5],[19,5,15,21]],"m":[57,13,4],"q":["¿Cómo describe Hebreos 13:4 el matrimonio?","¿Qué consejo da Proverbios 5:18 sobre alegrarse con la mujer de la mocedad?","¿Qué límites pueden poner juntos para proteger su fidelidad?"],"a":"Conversen y acuerden límites concretos en redes, trabajo y amistades para cuidar su fidelidad."},{"t":"Si Jehová no edificare la casa","p":[[18,127,0,0],[5,24,15,15]],"m":[18,127,1],"q":["Según el Salmo 127:1, ¿qué pasa cuando Jehová no edifica la casa?","¿Cómo describe el salmo a los hijos?","¿Qué decisión, como la de Josué, quieren tomar juntos para su hogar?"],"a":"Escriban juntos una oración por su hogar y su familia, y léanla cada día de esta semana."}]}];
+const DISC_ICONS = {
+  mujeres:'<path d="M12 3c2 3 2 5 0 8-2-3-2-5 0-8z"/><path d="M12 11c3-2 6-2 8 0-3 2-6 2-8 0zM12 11c-3-2-6-2-8 0 3 2 6 2 8 0z"/><path d="M12 11v10"/>',
+  hombres:'<path d="M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6z"/><path d="M12 8v8M9 11h6"/>',
+  jovenes:'<path d="M12 2c4 4 5 8 3 12a4 4 0 0 1-6 0c-2-4-1-8 3-12z"/><path d="M12 13c1 1 1.5 2.5.5 4h-1c-1-1.5-.5-3 .5-4z"/><path d="M6 21h12"/>',
+  adolescentes:'<path d="M12 21V11"/><path d="M12 11C12 7 9 5 5 5c0 4 3 6 7 6z"/><path d="M12 13c0-3 2.5-5 6-5 0 3-2.5 5-6 5z"/><path d="M7 21h10"/>',
+  matrimonio:'<circle cx="9" cy="13" r="5.5"/><circle cx="15" cy="13" r="5.5"/><path d="M10 4l2-2 2 2"/>'
+};
+let discDone = load('discDone', {}), discNotes = load('discNotes', {}), discLast = load('discLast', null), discView = {mode:'hub'};
+const dKey = (r,i) => DISC[r].id+':'+i;
+const pRef = p => B[p[0]][0]+' '+p[1]+(p[2] ? ':'+p[2]+(p[3] && p[3]!==p[2] ? '-'+p[3] : '') : '');
+const mRef = m => refName(m[0], m[1]-1, m[2]);
+const mText = m => verse(m[0], m[1]-1, m[2]);
+const routeDone = r => DISC[r].lessons.reduce((n,_,i) => n + (discDone[dKey(r,i)] ? 1 : 0), 0);
+const nextLesson = r => { const L = DISC[r].lessons; for(let i=0;i<L.length;i++) if(!discDone[dKey(r,i)]) return i; return L.length-1; };
+const icon = id => '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">'+DISC_ICONS[id]+'</svg>';
+const bar = (done,total,label) => '<div class="mini-bar"><span><i style="width:'+Math.round(done*100/total)+'%"></i></span><span>'+label+'</span></div>';
+
+function renderDiscCard(){
+  const c = $('discCard');
+  if(discLast && DISC[discLast.r]){
+    const r = discLast.r, i = discLast.i, R = DISC[r], L = R.lessons[i], dn = routeDone(r);
+    c.innerHTML = '<span class="eyebrow">Continuar mi discipulado</span><b style="font-size:17px">'+esc(R.name)+' · Lección '+(i+1)+' de '+R.lessons.length+'</b>'+
+      '<span class="small muted">'+esc(L.t)+' · '+esc(L.p.map(pRef).join(' · '))+'</span>'+bar(dn, R.lessons.length, dn+' de '+R.lessons.length)+
+      '<div class="row"><button class="btn primary" id="discGo">Continuar la lección</button></div>';
+    $('discGo').onclick = () => openLesson(r, i);
+  } else {
+    c.innerHTML = '<span class="eyebrow">Discipulado</span><b style="font-size:17px">Crece en la Palabra paso a paso</b>'+
+      '<span class="small muted">Cinco rutas de 8 lecciones: mujeres, hombres, jóvenes, adolescentes y matrimonio.</span>'+
+      '<div class="row"><button class="btn primary" id="discGo">Elegir una ruta</button></div>';
+    $('discGo').onclick = () => { discView = {mode:'hub'}; show('disc'); };
+  }
+}
+function renderDisc(){
+  const body = $('discBody');
+  if(discView.mode === 'ruta') return renderRoute(discView.r);
+  if(discView.mode === 'lec') return renderLesson(discView.r, discView.i);
+  body.innerHTML = '<h2 class="vt">Discipulado</h2>'+
+    '<p class="disc-quote">«'+esc(verse(39,27,19).replace(/^Por tanto, id/,'Id').replace(/,\s*bautizándolos.*$/,''))+'… '+esc(verse(39,27,20).replace(/:.*$/,''))+'.» Mateo 28:19-20</p>'+
+    DISC.map((R,r) => { const dn = routeDone(r), n = R.lessons.length;
+      return '<button class="route" data-r="'+r+'"><span class="ic">'+icon(R.id)+'</span><span class="tx"><b>'+esc(R.name)+'</b><small>'+esc(R.hint)+'</small>'+
+        bar(dn, n, dn ? dn+' de '+n : 'Comenzar')+'</span><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true" style="color:var(--muted)"><path d="M9 6l6 6-6 6"/></svg></button>'; }).join('')+
+    '<p class="small muted" style="margin:0">Los pasajes y versículos son de la Reina-Valera 1909. Tus notas y avance se guardan en este teléfono.</p>';
+  body.querySelectorAll('[data-r]').forEach(el => el.onclick = () => { discView = {mode:'ruta', r:+el.dataset.r}; renderDisc(); window.scrollTo(0,0); });
+}
+function renderRoute(r){
+  const R = DISC[r], n = R.lessons.length, dn = routeDone(r), nx = nextLesson(r);
+  $('discBody').innerHTML = '<button class="back-link" id="discBack">‹ Discipulado</button>'+
+    '<div class="disc-head"><span class="eyebrow">Ruta de discipulado</span><h2>'+esc(R.name)+'</h2>'+
+    '<p>«'+esc(mText(R.key))+'» '+esc(mRef(R.key))+'</p>'+bar(dn, n, dn+' de '+n+' lecciones')+'</div>'+
+    R.lessons.map((L,i) => { const done = !!discDone[dKey(r,i)], cur = !done && i===nx;
+      return '<button class="les'+(done?' done':'')+(cur?' cur':'')+'" data-i="'+i+'"><span class="num">'+(done?'✓':(i+1))+'</span><span class="tx"><b>'+esc(L.t)+'</b><small>'+esc(L.p.map(pRef).join(' · '))+'</small></span>'+(cur?'<span class="go">'+(dn?'Continuar':'Comenzar')+'</span>':'')+'</button>'; }).join('');
+  $('discBack').onclick = () => { discView = {mode:'hub'}; renderDisc(); window.scrollTo(0,0); };
+  $('discBody').querySelectorAll('[data-i]').forEach(el => el.onclick = () => openLesson(r, +el.dataset.i));
+}
+function openLesson(r,i){
+  discLast = {r,i}; save('discLast', discLast);
+  discView = {mode:'lec', r, i}; show('disc'); window.scrollTo(0,0);
+}
+function passageHTML(p){
+  const [b,c,s0,e0] = p, ch = B[b][1][c-1], s = s0 || 1, e = s0 ? (e0 || s0) : ch.length;
+  let h = '';
+  for(let v=s; v<=e && v<=ch.length; v++) h += '<sup>'+v+'</sup>'+esc(ch[v-1])+' ';
+  return '<div class="passage"><strong>'+esc(pRef(p))+'</strong><p>'+h+'</p></div>';
+}
+function renderLesson(r,i){
+  const R = DISC[r], L = R.lessons[i], k = dKey(r,i), done = !!discDone[k], n = R.lessons.length;
+  const p0 = L.p[0];
+  $('discBody').innerHTML = '<button class="back-link" id="lesBack">‹ '+esc(R.name)+'</button>'+
+    '<div class="disc-head"><span class="eyebrow">'+esc(R.name)+' · Lección '+(i+1)+' de '+n+'</span><h2>'+esc(L.t)+'</h2>'+(done?'<span class="small" style="font-weight:700;color:var(--gold)">✓ Lección completada</span>':'')+'</div>'+
+    '<section class="step"><h3>1 · Lee el pasaje</h3>'+L.p.map(passageHTML).join('')+'</section>'+
+    '<section class="step"><h3>2 · Para meditar</h3><ol class="qs">'+L.q.map(q => '<li>'+esc(q)+'</li>').join('')+'</ol></section>'+
+    '<section class="step"><h3>3 · Para memorizar</h3><div class="memo"><p>«'+esc(mText(L.m))+'»</p><span>'+esc(mRef(L.m))+'</span></div></section>'+
+    '<section class="step"><h3>4 · Para practicar esta semana</h3><div class="practice">'+esc(L.a)+'</div></section>'+
+    '<section class="step"><h3><label for="discNote">5 · Mi oración y mis notas</label></h3><textarea id="discNote" placeholder="Escribe aquí tu oración y lo que el Señor te enseña"></textarea><span class="small muted" id="discSaved">Se guarda solo mientras escribes.</span></section>'+
+    '<button class="btn primary" id="lesDone">'+(done?'Quitar marca de completada':'Marcar lección como completada')+'</button>'+
+    '<div class="two"><a class="btn wa" id="lesShare" target="_blank" rel="noopener" href="#">Compartir con mi grupo</a><button class="btn" id="lesRead">Leer '+esc(B[p0[0]][0]+' '+p0[1])+'</button></div>'+
+    (i < n-1 ? '<button class="btn" id="lesNext">Siguiente lección ›</button>' : '');
+  $('discNote').value = discNotes[k] || '';
+  let t;
+  $('discNote').addEventListener('input', () => { clearTimeout(t); t = setTimeout(() => {
+    const v = $('discNote').value; if(v.trim()) discNotes[k] = v; else delete discNotes[k];
+    save('discNotes', discNotes); $('discSaved').textContent = 'Guardado.'; }, 500); });
+  $('lesBack').onclick = () => { discView = {mode:'ruta', r}; renderDisc(); window.scrollTo(0,0); };
+  $('lesDone').onclick = () => {
+    if(discDone[k]) delete discDone[k]; else { discDone[k] = today(); toast('Lección completada. ¡Sigue adelante!'); }
+    save('discDone', discDone);
+    if(discDone[k] && i < n-1){ discLast = {r, i:i+1}; save('discLast', discLast); }
+    renderLesson(r,i);
+  };
+  $('lesRead').onclick = () => openChapter(p0[0], p0[1]-1, p0[2] || 1);
+  if($('lesNext')) $('lesNext').onclick = () => openLesson(r, i+1);
+  $('lesShare').href = wa('Discipulado · '+R.name+' · Lección '+(i+1)+': '+L.t+'\n\nLeer: '+L.p.map(pRef).join(' · ')+
+    '\n\nPara meditar:\n'+L.q.map((q,j) => (j+1)+'. '+q).join('\n')+
+    '\n\nPara memorizar: «'+mText(L.m)+'» '+mRef(L.m)+' (RV1909)\n\nPara practicar: '+L.a+'\n\n'+appLink());
+}
+
 // ---------- tamaño de letra ----------
 function applySize(){ document.documentElement.style.setProperty('--read-size', size+'px'); $('sizeLbl').textContent = size+' px'; }
 applyBg();
@@ -882,10 +1030,12 @@ $('copyApp').onclick = () => copy(appLink(), 'Enlace copiado');
 // ---------- navegación ----------
 document.querySelectorAll('.tab').forEach(t => t.onclick = () => {
   const n = t.dataset.tab;
+  if(n==='disc'){ discView = {mode:'hub'}; show('disc'); return; }
   if(n==='leer'){ if(last && view!=='leer') openChapter(last.b,last.c,last.v); else if(view!=='leer') openChapter(0,0,1); else show('libros'); }
   else show(n);
 });
 $('refBtn').onclick = () => show('libros');
+$('searchBtn').onclick = () => { show('buscar'); setTimeout(() => { try{ $('q').focus(); }catch(e){} }, 50); };
 $('brand').onclick = () => show('inicio');
 
 // ---------- instalación y uso sin conexión ----------
