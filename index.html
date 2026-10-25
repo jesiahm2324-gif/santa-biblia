@@ -42,6 +42,12 @@ img{max-width:100%}
   --bg:#1A1214; --surface:#241A1C; --fg:#F1E8DC; --muted:#B9A8A0; --line:#3B2D2F;
   --wine:#E7A0A9; --wine-text:#E7A0A9; --gold:#E0B44C; --gold-soft:#4A3A1A;
   --head:#4A141C; --head-fg:#FFF3E3; --chip:#33262A; color-scheme:dark }
+/* Estilos de fondo elegidos en Configuración (pergamino y noche usan los valores base) */
+:root[data-bg="blanco"]{ --bg:#FFFFFF; --surface:#FAF7F2; --line:#E6DED2; --chip:#F1ECE4 }
+:root[data-bg="sepia"]{ --bg:#EAD9BC; --surface:#F3E7D2; --fg:#3B2A1A; --muted:#6A523C; --line:#D6C29F; --wine-text:#86361C; --chip:#E2CDA8; --gold-soft:#F0D9A0 }
+:root[data-bg="lino"]{ --bg:#E8EBEE; --surface:#F6F7F9; --fg:#1E2328; --muted:#535D68; --line:#D3D8DE; --chip:#DCE1E6; --gold-soft:#F3E3B5 }
+:root[data-bg="medianoche"]{ --bg:#0F1B2D; --surface:#17263D; --fg:#E6ECF5; --muted:#A8B3C4; --line:#2A3B55; --wine:#E0B44C; --wine-text:#E0B44C;
+  --gold-soft:#3A3418; --head:#0B1626; --chip:#22344F; color-scheme:dark }
 
 html,body{height:100%}
 body{background:var(--bg); color:var(--fg); font-family:var(--f-ui); font-size:16px; -webkit-tap-highlight-color:transparent}
@@ -183,6 +189,36 @@ nav.tabs{position:fixed; left:0; right:0; bottom:0; z-index:20; background:var(-
 @media (prefers-reduced-motion: reduce){ .drawer summary .chev{transition:none} }
 @media (max-width:440px){ .brand span{font-size:16px; letter-spacing:1px} .brand svg{width:32px; height:32px} .ref-btn{padding:8px 12px; font-size:14px} }
 @media (max-width:370px){ .brand span{display:none} }
+/* Configuración */
+.vt{font-family:var(--f-display); color:var(--wine-text); font-size:24px}
+.bg-grid{display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:10px}
+.bg-opt{background:var(--surface); border:1px solid var(--line); border-radius:12px; padding:8px; display:flex; flex-direction:column; gap:6px; text-align:left; min-width:0}
+.bg-opt[aria-pressed="true"]{border:2px solid var(--wine-text); padding:7px}
+.bg-sw{display:block; height:56px; border-radius:8px; border:1px solid rgba(0,0,0,.12); position:relative}
+.bg-sw b{position:absolute; left:10px; top:8px; font-family:var(--f-read); font-weight:400; font-size:20px}
+.bg-sw i{position:absolute; left:10px; right:10px; bottom:10px; height:3px; border-radius:2px}
+.bg-opt span.nm{font-size:13px; font-weight:600}
+.set-list{background:var(--surface); border:1px solid var(--line); border-radius:12px; overflow:hidden}
+.set-row{display:flex; align-items:center; gap:12px; padding:12px 14px; min-height:52px; box-sizing:border-box; width:100%; background:none; border:0; text-align:left; color:var(--fg)}
+.set-row + .set-row{border-top:1px solid var(--line)}
+.set-row .tx{flex:1; display:flex; flex-direction:column; gap:2px; min-width:0}
+.set-row .tx b{font-size:15px}
+.set-row .tx small{font-size:13px; color:var(--muted)}
+.set-row input[type=checkbox]{width:22px; height:22px; accent-color:var(--wine-text); flex:none}
+.radio{width:20px; height:20px; border-radius:50%; border:2px solid var(--wine-text); display:grid; place-items:center; box-sizing:border-box; flex:none}
+.radio::after{content:""; width:10px; height:10px; border-radius:50%; background:transparent}
+[aria-checked="true"] .radio::after{background:var(--wine-text)}
+.opt-link{width:100%; display:flex; align-items:center; gap:8px; min-height:52px; padding:0 18px; font-weight:700; background:none; border:0; border-top:1px solid var(--line); text-align:left; color:var(--fg)}
+.opt-link .chev{margin-left:auto; font-size:20px; color:var(--muted)}
+.drawer-cfg{display:flex; align-items:center; gap:10px; width:100%; min-height:52px; padding:0 16px; margin-top:8px; background:none; border:0; border-top:1px solid var(--line); font-weight:700; color:var(--fg); text-align:left}
+/* Compartir como imagen */
+.seg{display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); background:var(--chip); border-radius:12px; padding:4px; gap:4px}
+.seg button{min-height:40px; border:0; border-radius:9px; background:transparent; font-weight:700; font-size:15px; color:var(--muted)}
+.seg button[aria-pressed="true"]{background:var(--surface); color:var(--wine-text); box-shadow:0 1px 3px rgba(0,0,0,.12)}
+#shareCanvas{width:min(300px,100%); height:auto; aspect-ratio:1/1; align-self:center; border-radius:14px; box-shadow:0 6px 18px rgba(40,20,15,.22); background:var(--chip)}
+.scenes{display:grid; grid-template-columns:repeat(5,minmax(0,1fr)); gap:8px}
+.scene{height:52px; border-radius:10px; border:1px solid var(--line)}
+.scene[aria-pressed="true"]{outline:3px solid var(--wine-text); outline-offset:2px}
 .loading{display:flex; flex-direction:column; align-items:center; gap:12px; padding:60px 0; color:var(--muted); text-align:center}
 @media (prefers-reduced-motion: no-preference){ .loading svg{animation:glow 1.8s ease-in-out infinite} @keyframes glow{50%{opacity:.55}} }
 </style>
@@ -242,16 +278,7 @@ nav.tabs{position:fixed; left:0; right:0; bottom:0; z-index:20; background:var(-
           <p class="small muted" style="margin:0">Tus favoritos, notas y avance se guardan en este teléfono.</p>
         </div>
       </details>
-      <details class="opt">
-        <summary>Tamaño de letra <span class="small muted" id="sizeLbl" style="font-weight:400;font-variant-numeric:tabular-nums">19 px</span><span class="chev" aria-hidden="true">›</span></summary>
-        <div class="opt-body">
-          <div class="size-row">
-            <button class="btn" id="sizeDown" aria-label="Letra más pequeña">A−</button>
-            <span class="small muted">Ajusta el texto de lectura</span>
-            <button class="btn" id="sizeUp" aria-label="Letra más grande">A+</button>
-          </div>
-        </div>
-      </details>
+      <button class="opt-link" id="openConfig">Configuración<span class="chev" aria-hidden="true">›</span></button>
     </div>
     <p class="small muted" style="text-align:center;margin:0">Texto: Reina-Valera 1909, de dominio público.</p>
   </section>
@@ -293,6 +320,24 @@ nav.tabs{position:fixed; left:0; right:0; bottom:0; z-index:20; background:var(-
     <div class="list" id="favList"></div>
   </section>
 
+  <section class="view" id="v-config" hidden>
+    <div style="display:flex;align-items:center;gap:10px"><button class="btn" id="cfgBack" aria-label="Volver al inicio">← Inicio</button><h2 class="vt">Configuración</h2></div>
+    <span class="eyebrow">Estilo de fondo</span>
+    <div class="card"><p class="text" style="margin:0"><sup style="font-family:var(--f-ui);font-size:.62em;font-weight:700;color:var(--wine-text);margin-right:4px;vertical-align:.45em">105</sup>Lámpara es á mis pies tu palabra, y lumbrera á mi camino.</p></div>
+    <div class="bg-grid" id="bgGrid"></div>
+    <div class="set-list">
+      <label class="set-row" for="autoBg"><span class="tx"><b>Cambiar solo con el teléfono</b><small>Cuando tu teléfono está en modo oscuro se usa el fondo Noche</small></span><input type="checkbox" id="autoBg"></label>
+    </div>
+    <span class="eyebrow">Al compartir un versículo</span>
+    <div class="set-list" role="radiogroup" aria-label="Al compartir un versículo" id="shareOpts"></div>
+    <span class="eyebrow">Lectura</span>
+    <div class="set-list">
+      <div class="set-row"><span class="tx"><b>Tamaño de letra</b><small id="sizeLbl">19 px</small></span>
+        <button class="btn" id="sizeDown" aria-label="Letra más pequeña">A−</button><button class="btn" id="sizeUp" aria-label="Letra más grande">A+</button></div>
+    </div>
+    <p class="small muted" style="margin:0">Estas preferencias se guardan en este teléfono.</p>
+  </section>
+
   <section class="view" id="v-estudio" hidden>
     <h2 style="font-family:var(--f-display);color:var(--wine-text)">Mi estudio</h2>
     <div class="card" id="progress"></div>
@@ -331,11 +376,22 @@ nav.tabs{position:fixed; left:0; right:0; bottom:0; z-index:20; background:var(-
     <div class="row">
       <button class="btn primary" id="favBtn">★ Guardar en favoritos</button>
       <button class="btn" id="copyV">Copiar</button>
-      <a class="btn wa" id="waV" href="#" target="_blank" rel="noopener">WhatsApp</a>
+      <button class="btn wa" id="shareV">Compartir</button>
     </div>
     <label for="noteTa" style="font-weight:600">Mi nota sobre este versículo</label>
     <textarea id="noteTa" placeholder="Escribe lo que Dios te habla en este pasaje"></textarea>
     <button class="btn" id="saveNote">Guardar nota</button>
+  </div>
+</div>
+<div class="sheet" id="shareSheet" role="dialog" aria-modal="true" aria-labelledby="shareTitle" hidden>
+  <div class="sheet-in">
+    <div style="display:flex;align-items:center;gap:10px"><strong id="shareTitle" style="color:var(--wine-text)"></strong>
+      <button class="btn" id="shareClose" style="margin-left:auto">Cerrar</button></div>
+    <div class="seg" role="group" aria-label="Tipo de imagen"><button id="segScene" aria-pressed="true">Con paisaje</button><button id="segPlain" aria-pressed="false">Sin paisaje</button></div>
+    <canvas id="shareCanvas" width="1080" height="1080" role="img" aria-label="Vista previa de la imagen del versículo"></canvas>
+    <div id="sceneBox" style="display:flex;flex-direction:column;gap:8px"><span class="eyebrow" id="sceneName"></span><div class="scenes" id="scenes"></div></div>
+    <button class="btn wa" id="shareImg">Compartir imagen</button>
+    <a class="btn" id="shareTxt" href="#" target="_blank" rel="noopener">Enviar solo el texto por WhatsApp</a>
   </div>
 </div>
 <div class="toast" id="toast" role="status" hidden></div>
@@ -373,7 +429,7 @@ function copy(text, ok){
 // ---------- vistas ----------
 function show(v){
   view = v;
-  ['inicio','libros','leer','buscar','favs','estudio'].forEach(n => $('v-'+n).hidden = n!==v);
+  ['inicio','libros','leer','buscar','favs','estudio','config'].forEach(n => $('v-'+n).hidden = n!==v);
   document.querySelectorAll('.tab').forEach(t => {
     const on = t.dataset.tab===v || (v==='libros' && t.dataset.tab==='leer');
     if(on) t.setAttribute('aria-current','page'); else t.removeAttribute('aria-current');
@@ -382,6 +438,7 @@ function show(v){
   if(v==='favs') renderFavs();
   if(v==='estudio') renderStudy();
   if(v==='libros') renderBooks();
+  if(v==='config') renderConfig();
   if(v!=='leer') window.scrollTo(0,0);
 }
 
@@ -507,7 +564,6 @@ function openSheet(b,c,v){
   sheetRef = {b,c,v}; const t = verse(b,c,v), r = refName(b,c,v);
   $('sheetRef').textContent = r; $('sheetText').textContent = t;
   $('noteTa').value = notes[key(b,c,v)] || '';
-  $('waV').href = wa('«'+t+'» '+r+' (RV1909)\n\n'+appLink());
   syncFavBtn();
   $('backdrop').hidden = false; $('sheet').hidden = false; $('sheetClose').focus();
   saveLast(b,c,v);
@@ -532,8 +588,10 @@ $('saveNote').onclick = () => {
   if(t) notes[k] = t; else delete notes[k];
   save('notes', notes); markVerse(b,c,v); toast(t ? 'Nota guardada' : 'Nota borrada');
 };
-$('sheetClose').onclick = closeSheet; $('backdrop').onclick = closeSheet;
-document.addEventListener('keydown', e => { if(e.key==='Escape' && !$('sheet').hidden) closeSheet(); });
+$('sheetClose').onclick = closeSheet;
+$('backdrop').onclick = () => { closeSheet(); closeShare(); };
+$('shareV').onclick = () => { const r = sheetRef; closeSheet(); openShare(r.b,r.c,r.v); };
+document.addEventListener('keydown', e => { if(e.key==='Escape'){ if(!$('sheet').hidden) closeSheet(); if(!$('shareSheet').hidden) closeShare(); } });
 
 // ---------- buscar ----------
 const norm = s => s.normalize('NFD').replace(/[̀-ͯ]/g,'').toLowerCase();
@@ -558,8 +616,9 @@ function renderFavs(){
   const l = $('favList');
   if(!favs.length){ l.innerHTML = '<div class="empty">Aún no tienes favoritos.<br>Mientras lees, toca un versículo y elige «Guardar en favoritos».</div>'; return; }
   l.innerHTML = favs.map((f,i) => '<div class="item"><span class="ref">'+esc(refName(f.b,f.c,f.v))+'</span><span class="t">'+esc(verse(f.b,f.c,f.v))+'</span>'+
-    '<div class="acts"><button class="btn" data-open="'+i+'">Leer</button><a class="btn wa" target="_blank" rel="noopener" href="'+esc(wa('«'+verse(f.b,f.c,f.v)+'» '+refName(f.b,f.c,f.v)+' (RV1909)\n\n'+appLink()))+'">WhatsApp</a><button class="btn" data-del="'+i+'">Quitar</button></div></div>').join('');
+    '<div class="acts"><button class="btn" data-open="'+i+'">Leer</button><button class="btn wa" data-share="'+i+'">Compartir</button><button class="btn" data-del="'+i+'">Quitar</button></div></div>').join('');
   l.querySelectorAll('[data-open]').forEach(el => el.onclick = () => { const f = favs[+el.dataset.open]; openChapter(f.b,f.c,f.v); });
+  l.querySelectorAll('[data-share]').forEach(el => el.onclick = () => { const f = favs[+el.dataset.share]; openShare(f.b,f.c,f.v); });
   l.querySelectorAll('[data-del]').forEach(el => el.onclick = () => { favs.splice(+el.dataset.del,1); save('favs',favs); renderFavs(); toast('Quitado de favoritos'); });
 }
 
@@ -612,7 +671,9 @@ function buildDrawer(){
     });
     h += '</details>';
   });
+  h += '<button class="drawer-cfg" id="drawerCfg"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg>Configuración</button>';
   const body = $('drawerBody'); body.innerHTML = h;
+  $('drawerCfg').onclick = () => { closeDrawer(); show('config'); };
   body.querySelectorAll('details.bk').forEach(d => d.addEventListener('toggle', () => {
     if(d.open){
       const b = +d.dataset.b, box = d.querySelector('.chs');
@@ -639,8 +700,180 @@ $('drawerClose').onclick = closeDrawer;
 $('drawerBg').onclick = closeDrawer;
 document.addEventListener('keydown', e => { if(e.key==='Escape' && !$('drawer').hidden){ closeDrawer(); $('menuBtn').focus(); } });
 
+// ---------- configuración ----------
+let settings = Object.assign({bg:'pergamino', auto:true, share:'preguntar', scene:'montanas', mode:'paisaje'}, load('settings', {}));
+const saveSettings = () => save('settings', settings);
+const BGS = [
+  {id:'pergamino', name:'Pergamino', bg:'#F6F1E7', fg:'#2A1A1C', num:'#7A2431'},
+  {id:'blanco', name:'Blanco', bg:'#FFFFFF', fg:'#1F1A1A', num:'#7A2431'},
+  {id:'sepia', name:'Sepia', bg:'#EAD9BC', fg:'#3B2A1A', num:'#86361C'},
+  {id:'lino', name:'Lino gris', bg:'#E8EBEE', fg:'#1E2328', num:'#7A2431'},
+  {id:'noche', name:'Noche', bg:'#1A1214', fg:'#F1E8DC', num:'#E7A0A9'},
+  {id:'medianoche', name:'Medianoche', bg:'#0F1B2D', fg:'#E6ECF5', num:'#E0B44C'}
+];
+const SHARE_OPTS = [
+  {id:'preguntar', name:'Elegir cada vez', hint:'Al compartir decides con o sin paisaje'},
+  {id:'paisaje', name:'Empezar con paisaje', hint:'La imagen se prepara sobre un paisaje natural'},
+  {id:'texto', name:'Empezar sin paisaje', hint:'La imagen se prepara sobre pergamino con el logo'}
+];
+const darkMQ = window.matchMedia ? matchMedia('(prefers-color-scheme: dark)') : null;
+function applyBg(){
+  let st = settings.bg;
+  if(settings.auto && darkMQ && darkMQ.matches && st!=='medianoche') st = 'noche';
+  const root = document.documentElement;
+  if(st==='pergamino' || st==='noche') root.removeAttribute('data-bg'); else root.setAttribute('data-bg', st);
+  root.setAttribute('data-theme', (st==='noche' || st==='medianoche') ? 'dark' : 'light');
+  const m = document.querySelector('meta[name="theme-color"]');
+  if(m) m.setAttribute('content', getComputedStyle(root).getPropertyValue('--head').trim() || '#5E1A24');
+}
+if(darkMQ){ try{ darkMQ.addEventListener('change', applyBg); }catch(e){ try{ darkMQ.addListener(applyBg); }catch(_){} } }
+function renderConfig(){
+  $('bgGrid').innerHTML = BGS.map(b => '<button class="bg-opt" data-bg="'+b.id+'" aria-pressed="'+(settings.bg===b.id)+'">'+
+    '<span class="bg-sw" style="background:'+b.bg+'"><b style="color:'+b.fg+'">Aa</b><i style="background:'+b.num+'"></i></span><span class="nm">'+b.name+'</span></button>').join('');
+  $('bgGrid').querySelectorAll('[data-bg]').forEach(el => el.onclick = () => { settings.bg = el.dataset.bg; saveSettings(); applyBg(); renderConfig(); });
+  $('autoBg').checked = !!settings.auto;
+  $('shareOpts').innerHTML = SHARE_OPTS.map(o => '<button class="set-row" role="radio" aria-checked="'+(settings.share===o.id)+'" data-so="'+o.id+'"><span class="radio" aria-hidden="true"></span><span class="tx"><b>'+o.name+'</b><small>'+o.hint+'</small></span></button>').join('');
+  $('shareOpts').querySelectorAll('[data-so]').forEach(el => el.onclick = () => { settings.share = el.dataset.so; saveSettings(); renderConfig(); });
+  $('sizeLbl').textContent = size+' px';
+}
+$('autoBg').addEventListener('change', e => { settings.auto = e.target.checked; saveSettings(); applyBg(); });
+$('openConfig').onclick = () => show('config');
+$('cfgBack').onclick = () => show('inicio');
+
+// ---------- compartir como imagen ----------
+const SCENES = [
+  {id:'montanas', name:'Amanecer en los montes', sw:'linear-gradient(#5B3B6E,#E58A6B 55%,#3E2846 85%)'},
+  {id:'mar', name:'Mar en calma', sw:'linear-gradient(#7FB3DD,#F5D8AE 60%,#2F6F99 62%)'},
+  {id:'trigo', name:'Campo de trigo', sw:'linear-gradient(#F9E2A8,#E8B060 55%,#B5852F 70%)'},
+  {id:'bosque', name:'Bosque de cedros', sw:'linear-gradient(#DCEBDF,#6E9A86 55%,#1F4232 85%)'},
+  {id:'estrellas', name:'Cielo estrellado', sw:'linear-gradient(#0B1633,#2A3766 70%,#070C1C 85%)'}
+];
+let shareRef = null, shareFile = null, shareMode = 'paisaje', drawSeq = 0;
+function drawScene(ctx, id){
+  const lg = (stops, y0, y1) => { const g = ctx.createLinearGradient(0,y0,0,y1); stops.forEach(([o,c]) => g.addColorStop(o,c)); return g; };
+  const P = (d, fill) => { ctx.fillStyle = fill; ctx.fill(new Path2D(d)); };
+  const C = (x,y,r,fill) => { ctx.beginPath(); ctx.arc(x,y,r,0,Math.PI*2); ctx.fillStyle = fill; ctx.fill(); };
+  if(id==='mar'){
+    ctx.fillStyle = lg([[0,'#7FB3DD'],[1,'#F5D8AE']],0,190); ctx.fillRect(0,0,300,190);
+    C(210,170,30,'#FFF1C9');
+    ctx.fillStyle = '#2F6F99'; ctx.fillRect(0,182,300,118); ctx.fillStyle = '#1F5277'; ctx.fillRect(0,240,300,60);
+    ctx.globalAlpha = .6; ctx.fillStyle = '#FFF1C9'; ctx.fillRect(196,192,28,3); ctx.fillRect(188,204,44,3); ctx.fillRect(200,216,20,3); ctx.globalAlpha = 1;
+  } else if(id==='trigo'){
+    ctx.fillStyle = lg([[0,'#F9E2A8'],[1,'#E8B060']],0,300); ctx.fillRect(0,0,300,300);
+    C(80,120,30,'#FFF6D8');
+    P('M0 200 Q150 150 300 190 L300 300 L0 300 Z','#D6A445'); P('M0 240 Q150 205 300 245 L300 300 L0 300 Z','#B5852F');
+    ctx.strokeStyle = '#8C6420'; ctx.lineWidth = 3; ctx.lineCap = 'round';
+    ctx.stroke(new Path2D('M20 300 L26 262 M44 300 L48 258 M70 300 L76 264 M98 300 L100 256 M126 300 L132 262 M156 300 L158 258 M186 300 L192 264 M214 300 L216 256 M244 300 L250 262 M272 300 L274 258'));
+  } else if(id==='bosque'){
+    ctx.fillStyle = lg([[0,'#DCEBDF'],[1,'#93BCA4']],0,300); ctx.fillRect(0,0,300,300);
+    P('M0 210 L80 140 L150 200 L230 130 L300 190 L300 300 L0 300 Z','#6E9A86');
+    [['M20 265 L45 170 L70 265 Z','#2F5D46'],['M60 265 L90 150 L120 265 Z','#244D3A'],['M170 265 L200 160 L230 265 Z','#2F5D46'],['M215 265 L245 140 L275 265 Z','#244D3A'],['M255 265 L280 185 L305 265 Z','#2F5D46']].forEach(([d,c]) => P(d,c));
+    ctx.fillStyle = '#1F4232'; ctx.fillRect(0,262,300,38);
+  } else if(id==='estrellas'){
+    ctx.fillStyle = lg([[0,'#0B1633'],[1,'#2A3766']],0,300); ctx.fillRect(0,0,300,300);
+    C(225,70,22,'#F4EBD0'); C(236,63,20,'#0F1C3E');
+    [[30,40,1.6],[70,90,1.2],[110,30,1.8],[150,70,1.2],[180,120,1.5],[40,140,1.2],[270,140,1.6],[120,150,1],[260,30,1.2],[90,200,1.2],[200,30,1],[20,190,1.1]].forEach(([x,y,r]) => C(x,y,r,'#FFFFFF'));
+    P('M0 240 Q120 200 300 235 L300 300 L0 300 Z','#070C1C');
+  } else {
+    ctx.fillStyle = lg([[0,'#5B3B6E'],[.55,'#E58A6B'],[1,'#F7C98E']],0,300); ctx.fillRect(0,0,300,300);
+    C(150,200,42,'#FFE6AE');
+    P('M0 230 L60 170 L105 205 L165 140 L225 200 L265 170 L300 195 L300 300 L0 300 Z','#7A4E72');
+    P('M0 260 L45 225 L95 250 L150 215 L210 255 L255 230 L300 250 L300 300 L0 300 Z','#3E2846');
+  }
+}
+function drawLogo(ctx, x, y, size){
+  ctx.save(); ctx.translate(x,y); ctx.scale(size/240, size/240);
+  ctx.fillStyle = '#5E1A24'; ctx.fill(new Path2D('M54 0 H186 Q240 0 240 54 V186 Q240 240 186 240 H54 Q0 240 0 186 V54 Q0 0 54 0 Z'));
+  ctx.fillStyle = '#E0B44C'; ctx.fill(new Path2D('M120 46 C144 74 142 100 120 120 C98 100 96 74 120 46 Z'));
+  ctx.fillStyle = '#FFF3D6'; ctx.fill(new Path2D('M120 76 C130 90 129 104 120 112 C111 104 110 90 120 76 Z'));
+  ctx.fillStyle = '#F6F1E7'; ctx.fill(new Path2D('M38 150 Q80 128 117 148 L117 198 Q80 178 38 198 Z')); ctx.fill(new Path2D('M123 148 Q160 128 202 150 L202 198 Q160 178 123 198 Z'));
+  ctx.restore();
+}
+function wrapLines(ctx, text, maxW){
+  const words = text.split(' '), lines = []; let line = '';
+  words.forEach(w => { const t = line ? line+' '+w : w; if(ctx.measureText(t).width > maxW && line){ lines.push(line); line = w; } else line = t; });
+  if(line) lines.push(line); return lines;
+}
+async function drawShare(){
+  const seq = ++drawSeq; shareFile = null;
+  const cv = $('shareCanvas'), ctx = cv.getContext('2d'), S = 1080, {b,c,v} = shareRef;
+  try{ if(document.fonts && document.fonts.load) await Promise.race([Promise.all([document.fonts.load('400 48px Literata'), document.fonts.load('700 40px "Source Sans 3"'), document.fonts.load('700 30px Cinzel')]), new Promise(r => setTimeout(r, 1500))]); }catch(e){}
+  if(seq !== drawSeq) return;
+  const scene = shareMode === 'paisaje';
+  ctx.setTransform(1,0,0,1,0,0); ctx.clearRect(0,0,S,S); ctx.shadowColor = 'transparent'; ctx.shadowBlur = 0;
+  if(scene){
+    ctx.save(); ctx.scale(S/300, S/300); drawScene(ctx, settings.scene); ctx.restore();
+    ctx.fillStyle = 'rgba(15,8,10,0.38)'; ctx.fillRect(0,0,S,S);
+  } else {
+    ctx.fillStyle = '#F6F1E7'; ctx.fillRect(0,0,S,S);
+    ctx.strokeStyle = '#C9A97A'; ctx.lineWidth = 5; ctx.strokeRect(48,48,S-96,S-96);
+  }
+  const text = '«'+verse(b,c,v)+'»', ref = refName(b,c,v)+' · RV1909';
+  const maxW = S - 2*130, room = scene ? 720 : 560;
+  let fs = 66, lines;
+  for(; fs >= 30; fs -= 2){ ctx.font = '400 '+fs+'px Literata, Georgia, serif'; lines = wrapLines(ctx, text, maxW); if(lines.length * fs * 1.5 <= room) break; }
+  const lh = fs * 1.5, textH = lines.length * lh, refH = 44, logoH = scene ? 0 : 130;
+  const blockH = logoH + textH + 34 + refH;
+  let y = (S - blockH) / 2;
+  if(!scene){ drawLogo(ctx, S/2 - 50, y, 100); y += logoH; }
+  ctx.textAlign = 'center'; ctx.textBaseline = 'top';
+  if(scene){ ctx.shadowColor = 'rgba(0,0,0,0.55)'; ctx.shadowBlur = 18; }
+  ctx.fillStyle = scene ? '#FFFFFF' : '#2A1A1C'; ctx.font = '400 '+fs+'px Literata, Georgia, serif';
+  lines.forEach((ln,i) => ctx.fillText(ln, S/2, y + i*lh + (lh-fs)/2));
+  y += textH + 34;
+  ctx.fillStyle = scene ? '#F4D488' : '#7A2431'; ctx.font = '700 40px "Source Sans 3", system-ui, sans-serif';
+  ctx.fillText(ref, S/2, y);
+  ctx.shadowColor = 'transparent'; ctx.shadowBlur = 0;
+  ctx.font = '700 28px Cinzel, Georgia, serif';
+  if(scene){
+    ctx.textAlign = 'right'; ctx.textBaseline = 'middle'; ctx.fillStyle = 'rgba(255,255,255,0.9)';
+    ctx.fillText('SANTA BIBLIA', S-48, S-62); drawLogo(ctx, S-48-ctx.measureText('SANTA BIBLIA').width-62, S-90, 52);
+  } else {
+    ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillStyle = '#7A2431'; ctx.fillText('SANTA BIBLIA', S/2, S-92);
+  }
+  cv.toBlob(blob => { if(seq === drawSeq && blob) shareFile = new File([blob], 'versiculo-'+refName(b,c,v).replace(/[^\wÁÉÍÓÚáéíóúñÑ]+/g,'-')+'.png', {type:'image/png'}); }, 'image/png');
+}
+function renderShareUI(){
+  const scene = shareMode === 'paisaje';
+  $('segScene').setAttribute('aria-pressed', scene); $('segPlain').setAttribute('aria-pressed', !scene);
+  $('sceneBox').hidden = !scene;
+  const cur = SCENES.find(x => x.id===settings.scene) || SCENES[0];
+  $('sceneName').textContent = 'Paisaje: ' + cur.name;
+  $('scenes').innerHTML = SCENES.map(x => '<button class="scene" data-sc="'+x.id+'" aria-label="'+x.name+'" aria-pressed="'+(x.id===cur.id)+'" style="background:'+x.sw+'"></button>').join('');
+  $('scenes').querySelectorAll('[data-sc]').forEach(el => el.onclick = () => { settings.scene = el.dataset.sc; saveSettings(); renderShareUI(); drawShare(); });
+}
+function setMode(m){ shareMode = m; if(settings.share==='preguntar'){ settings.mode = m; saveSettings(); } renderShareUI(); drawShare(); }
+function openShare(b,c,v){
+  shareRef = {b,c,v};
+  shareMode = settings.share==='paisaje' ? 'paisaje' : settings.share==='texto' ? 'texto' : (settings.mode || 'paisaje');
+  $('shareTitle').textContent = 'Compartir ' + refName(b,c,v);
+  $('shareTxt').href = wa('«'+verse(b,c,v)+'» '+refName(b,c,v)+' (RV1909)\n\n'+appLink());
+  renderShareUI();
+  $('backdrop').hidden = false; $('shareSheet').hidden = false; $('shareClose').focus();
+  drawShare();
+}
+function closeShare(){ $('shareSheet').hidden = true; if($('sheet').hidden) $('backdrop').hidden = true; }
+$('shareClose').onclick = closeShare;
+$('segScene').onclick = () => setMode('paisaje');
+$('segPlain').onclick = () => setMode('texto');
+$('shareImg').onclick = () => {
+  if(!shareFile){ toast('Preparando la imagen, toca de nuevo en un momento.'); return; }
+  const {b,c,v} = shareRef;
+  const data = {files:[shareFile], text: refName(b,c,v)+' (RV1909) · '+appLink()};
+  if(navigator.canShare && navigator.canShare({files:[shareFile]})){
+    navigator.share(data).catch(() => {});
+  } else {
+    try{
+      const a = document.createElement('a'); a.href = URL.createObjectURL(shareFile); a.download = shareFile.name;
+      document.body.appendChild(a); a.click(); a.remove();
+      toast('Imagen guardada. Adjúntala en WhatsApp.');
+    }catch(e){ toast('Este navegador no permite compartir imágenes. Usa «Enviar solo el texto».'); }
+  }
+};
+
 // ---------- tamaño de letra ----------
 function applySize(){ document.documentElement.style.setProperty('--read-size', size+'px'); $('sizeLbl').textContent = size+' px'; }
+applyBg();
 $('sizeDown').onclick = () => { size = Math.max(15,size-1); save('size',size); applySize(); };
 $('sizeUp').onclick = () => { size = Math.min(28,size+1); save('size',size); applySize(); };
 $('copyApp').onclick = () => copy(appLink(), 'Enlace copiado');
