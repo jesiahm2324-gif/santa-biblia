@@ -270,6 +270,28 @@ nav.tabs{position:fixed; left:0; right:0; bottom:0; z-index:20; background:var(-
 .upd-bar span{flex:1; min-width:0; font-size:15px}
 .upd-bar .btn.primary{background:var(--gold); border-color:var(--gold); color:#2A1A1C; flex:none}
 .upd-x{background:none; border:0; color:var(--head-fg); width:40px; height:40px; flex:none; font-size:18px}
+/* Sermones */
+.pt{background:var(--surface); border:1px solid var(--line); border-radius:14px; padding:14px 16px; display:flex; flex-direction:column; gap:8px}
+.pt h4{margin:0; font-family:var(--f-display); font-size:18px; color:var(--wine-text); line-height:1.3}
+.pt p{margin:0; font-size:16px; line-height:1.5}
+.pt details{border-top:1px solid var(--line); padding-top:6px}
+.pt summary{cursor:pointer; font-weight:700; color:var(--wine-text); min-height:32px; display:flex; align-items:center}
+.pt details p{font-family:var(--f-read); font-size:var(--read-size); line-height:1.65; margin-top:4px}
+.prose{font-size:16px; line-height:1.6; margin:0}
+.preach{position:fixed; inset:0; z-index:60; background:#1A1214; color:#F1E8DC; display:flex; flex-direction:column;
+  padding:calc(12px + env(safe-area-inset-top,0px)) max(20px,env(safe-area-inset-right,0px)) calc(16px + env(safe-area-inset-bottom,0px)) max(20px,env(safe-area-inset-left,0px))}
+.preach-top{display:flex; align-items:center; gap:10px; color:#B9A8A0; font-size:14px}
+.preach-top button{margin-left:auto; background:none; border:1px solid #3B2D2F; color:#F1E8DC; border-radius:10px; min-height:44px; padding:0 14px; font-weight:700}
+.preach-body{flex:1; overflow:auto; display:flex; flex-direction:column; justify-content:center; gap:18px; max-width:760px; width:100%; margin:0 auto; padding-block:16px}
+.preach-body .k{font-size:13px; font-weight:700; letter-spacing:1.6px; text-transform:uppercase; color:#B9A8A0}
+.preach-body h2{font-family:var(--f-display); font-size:clamp(26px,7vw,40px); line-height:1.2; color:#E0B44C}
+.preach-body .vt2{margin:0; font-family:var(--f-read); font-size:clamp(20px,5.4vw,30px); line-height:1.55}
+.preach-body .rf{font-weight:700; color:#E7A0A9; font-size:16px}
+.preach-body .tx2{margin:0; font-size:clamp(17px,4.6vw,24px); line-height:1.55; color:#E9DED2}
+.preach-nav{display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:10px; max-width:760px; width:100%; margin:0 auto}
+.preach-nav button{min-height:54px; border-radius:12px; font-weight:700; font-size:17px; border:1px solid #3B2D2F; background:transparent; color:#F1E8DC}
+.preach-nav button.nx{background:#E0B44C; border-color:#E0B44C; color:#2A1A1C}
+.preach-nav button:disabled{opacity:.35}
 .loading{display:flex; flex-direction:column; align-items:center; gap:12px; padding:60px 0; color:var(--muted); text-align:center}
 @media (prefers-reduced-motion: no-preference){ .loading svg{animation:glow 1.8s ease-in-out infinite} @keyframes glow{50%{opacity:.55}} }
 </style>
@@ -448,6 +470,11 @@ nav.tabs{position:fixed; left:0; right:0; bottom:0; z-index:20; background:var(-
     <button class="btn wa" id="shareImg">Compartir imagen</button>
     <a class="btn" id="shareTxt" href="#" target="_blank" rel="noopener">Enviar solo el texto por WhatsApp</a>
   </div>
+</div>
+<div class="preach" id="preach" role="dialog" aria-modal="true" aria-label="Modo predicar" hidden>
+  <div class="preach-top"><span id="prTitle"></span><span id="prStep" style="font-variant-numeric:tabular-nums"></span><button id="prClose">Salir</button></div>
+  <div class="preach-body" id="prBody"></div>
+  <div class="preach-nav"><button id="prPrev">‹ Anterior</button><button class="nx" id="prNext">Siguiente ›</button></div>
 </div>
 <div class="upd-bar" id="updBar" role="status" hidden>
   <span>Hay una versión nueva de Santa Biblia.</span>
@@ -943,6 +970,7 @@ const DISC_ICONS = {
   adolescentes:'<path d="M12 21V11"/><path d="M12 11C12 7 9 5 5 5c0 4 3 6 7 6z"/><path d="M12 13c0-3 2.5-5 6-5 0 3-2.5 5-6 5z"/><path d="M7 21h10"/>',
   matrimonio:'<circle cx="9" cy="13" r="5.5"/><circle cx="15" cy="13" r="5.5"/><path d="M10 4l2-2 2 2"/>'
 };
+let discTab = 'rutas';
 let discDone = load('discDone', {}), discNotes = load('discNotes', {}), discLast = load('discLast', null), discView = {mode:'hub'};
 const OLD_ORDER = ['mujeres','hombres','jovenes','adolescentes','matrimonio'];
 if(discLast && discLast.id === undefined && typeof discLast.r === 'number') discLast = {id: OLD_ORDER[discLast.r], i: discLast.i};
@@ -976,13 +1004,24 @@ function renderDisc(){
   const body = $('discBody');
   if(discView.mode === 'ruta') return renderRoute(discView.r);
   if(discView.mode === 'lec') return renderLesson(discView.r, discView.i);
-  body.innerHTML = '<h2 class="vt">Discipulado</h2>'+
+  if(discView.mode === 'serm') return renderSermon(discView.s);
+  const seg = '<div class="seg" role="group" aria-label="Sección"><button id="segRutas" aria-pressed="'+(discTab==='rutas')+'">Rutas</button><button id="segSerm" aria-pressed="'+(discTab==='serm')+'">Sermones</button></div>';
+  if(discTab === 'serm'){
+    body.innerHTML = '<h2 class="vt">Discipulado</h2>'+seg+'<span class="eyebrow">Para hombres · '+SERM.length+' sermones</span>'+
+      SERM.map((S,i) => '<button class="les" data-s="'+i+'"><span class="num">'+(i+1)+'</span><span class="tx"><b>'+esc(S.t)+'</b><small>'+esc(S.base.map(pRef).join(' · '))+'</small></span></button>').join('')+
+      '<p class="small muted" style="margin:0">Bosquejos para predicar o estudiar en grupo. Los versículos son de la Reina-Valera 1909.</p>';
+    body.querySelectorAll('[data-s]').forEach(el => el.onclick = () => { discView = {mode:'serm', s:+el.dataset.s}; renderDisc(); window.scrollTo(0,0); });
+    $('segRutas').onclick = () => { discTab = 'rutas'; renderDisc(); };
+    return;
+  }
+  body.innerHTML = '<h2 class="vt">Discipulado</h2>'+seg+
     '<p class="disc-quote">«'+esc(verse(39,27,19).replace(/^Por tanto, id/,'Id').replace(/,\s*bautizándolos.*$/,''))+'… '+esc(verse(39,27,20).replace(/:.*$/,''))+'.» Mateo 28:19-20</p>'+
     DISC.map((R,r) => { const dn = routeDone(r), n = R.lessons.length;
       return '<button class="route" data-r="'+r+'"><span class="ic">'+icon(R.id)+'</span><span class="tx"><b>'+esc(R.name)+(R.start ? ' <span class="start-tag">Empieza aquí</span>' : '')+'</b><small>'+esc(R.hint)+'</small>'+
         bar(dn, n, dn ? dn+' de '+n : 'Comenzar')+'</span><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true" style="color:var(--muted)"><path d="M9 6l6 6-6 6"/></svg></button>'; }).join('')+
     '<p class="small muted" style="margin:0">Los pasajes y versículos son de la Reina-Valera 1909. Tus notas y avance se guardan en este teléfono.</p>';
   body.querySelectorAll('[data-r]').forEach(el => el.onclick = () => { discView = {mode:'ruta', r:+el.dataset.r}; renderDisc(); window.scrollTo(0,0); });
+  $('segSerm').onclick = () => { discTab = 'serm'; renderDisc(); };
 }
 function renderRoute(r){
   const R = DISC[r], n = R.lessons.length, dn = routeDone(r), nx = nextLesson(r);
@@ -1036,6 +1075,60 @@ function renderLesson(r,i){
     '\n\nPara memorizar: «'+mText(L.m)+'» '+mRef(L.m)+' (RV1909)\n\nPara practicar: '+L.a+'\n\n'+appLink());
 }
 
+// ---------- sermones ----------
+const SERM = [{"t":"Esfuérzate, y sé varón","base":[[10,2,1,4]],"intro":"Al final de su vida, David llamó a su hijo Salomón para darle su último encargo. No le habló primero del trono ni de las riquezas, sino de andar con Dios. Es el mismo llamado que el Señor hace hoy a cada hombre.","pts":[{"t":"Esfuérzate en el Señor","refs":[[10,2,2,2],[48,6,10,10]],"x":"El esfuerzo que Dios pide no nace de la fuerza propia. Pablo manda confortarse «en el Señor, y en la potencia de su fortaleza»."},{"t":"Guarda su Palabra","refs":[[10,2,3,3],[5,1,8,8]],"x":"David no le dio a Salomón una fórmula nueva, sino lo que «está escrito». El varón de Dios conoce, medita y obedece la Escritura."},{"t":"Anda delante de Él con verdad","refs":[[10,2,4,4],[19,20,7,7]],"x":"Andar con verdad, de todo corazón y de toda alma, deja un legado: «bienaventurados serán sus hijos después de él»."}],"app":"¿En qué área de tu vida necesitas esforzarte en el Señor esta semana: tu oración, tu hogar, tu trabajo o tu pureza?","call":{"ref":[5,24,15,15],"x":"Invita a los hombres a decidir hoy, como Josué, servir a Jehová junto con su casa."}},{"t":"Un varón conforme al corazón de Dios","base":[[8,16,6,13],[43,13,22,22]],"intro":"Cuando Samuel fue a ungir a un rey entre los hijos de Isaí, todos esperaban al más alto o al mayor. Pero Dios escogió al menor, al que apacentaba las ovejas. Dios mira lo que el hombre no ve.","pts":[{"t":"Dios mira el corazón","refs":[[8,16,7,7]],"x":"Antes que la apariencia, los logros o la estatura, Jehová mira el corazón. Lo que somos en lo secreto es lo que cuenta delante de él."},{"t":"Fiel en lo poco","refs":[[8,16,11,11],[41,16,10,10]],"x":"David estaba apacentando las ovejas cuando fue llamado. Dios forma a sus siervos en las tareas sencillas y escondidas."},{"t":"Un corazón que hace su voluntad","refs":[[43,13,22,22],[18,51,10,10]],"x":"Dios dijo de David: «el cual hará todo lo que yo quiero». David cayó, pero se arrepintió y pidió a Dios un corazón limpio."}],"app":"¿Qué ve Dios hoy en tu corazón? ¿Hay algo que necesites confesarle para que lo limpie?","call":{"ref":[18,51,10,10],"x":"Oren juntos pidiendo a Dios un corazón limpio y un espíritu recto."}},{"t":"El hombre que se pone al portillo","base":[[25,22,29,31]],"intro":"En tiempos de Ezequiel el pueblo se había corrompido. Dios buscó un hombre que hiciese vallado y se pusiese al portillo, delante de él, por la tierra; y no lo halló.","pts":[{"t":"Dios busca un hombre","refs":[[25,22,30,30]],"x":"Dios no buscó primero ejércitos ni murallas, sino un hombre. Él sigue buscando hombres dispuestos a ponerse delante de él por los suyos."},{"t":"Ponerse delante de Dios en oración","refs":[[1,32,11,14]],"x":"Cuando el pueblo pecó, Moisés oró a la faz de Jehová por ellos, y Jehová se arrepintió del mal que dijo que había de hacer."},{"t":"Pelear por la casa","refs":[[15,4,14,14]],"x":"Nehemías llamó a los hombres a acordarse del Señor y a pelear por sus hermanos, sus hijos, sus hijas, sus mujeres y sus casas."}],"app":"¿Por quién te está llamando Dios a ponerte al portillo: tu esposa, tus hijos, tu iglesia, tu barrio?","call":{"ref":[25,22,30,30],"x":"Que cada hombre anote los nombres por quienes intercederá cada día de esta semana."}},{"t":"Lo que Jehová pide del hombre","base":[[32,6,6,8]],"intro":"El pueblo se preguntaba con qué presentarse delante de Dios: holocaustos, becerros, millares de carneros. Miqueas responde que Dios ya declaró qué es lo bueno.","pts":[{"t":"Hacer juicio","refs":[[32,6,8,8],[19,21,3,3]],"x":"Hacer lo justo y lo recto en el hogar, en el trabajo y en los negocios es a Jehová más agradable que sacrificio."},{"t":"Amar misericordia","refs":[[32,6,8,8],[39,5,7,7]],"x":"No basta con hacer obras de misericordia de vez en cuando: Dios pide amarla, como él la ama con nosotros."},{"t":"Humillarte para andar con tu Dios","refs":[[32,6,8,8],[58,4,10,10]],"x":"El hombre de Dios no camina delante de Dios ni lejos de él, sino con él, en humildad."}],"app":"¿Cuál de estas tres cosas necesitas practicar más esta semana: juicio, misericordia o humildad?","call":{"ref":[32,6,8,8],"x":"Que cada hombre escoja una de las tres y ore pidiendo a Dios ayuda para vivirla."}},{"t":"Firmes en la fe","base":[[45,16,13,14]],"intro":"Al terminar su carta a una iglesia con muchos problemas, Pablo resumió en pocas palabras lo que esperaba de los creyentes.","pts":[{"t":"Velad","refs":[[45,16,13,13],[59,5,8,8]],"x":"Estar despiertos y atentos, porque el adversario anda alrededor como león rugiente, buscando a quien devore."},{"t":"Estad firmes; portaos varonilmente","refs":[[45,16,13,13],[48,6,13,13]],"x":"Mantenerse en pie con toda la armadura de Dios, para resistir en el día malo sin retroceder."},{"t":"Todo con caridad","refs":[[45,16,14,14],[50,3,14,14]],"x":"La firmeza del varón de Dios va siempre acompañada de caridad, «el vínculo de la perfección»."}],"app":"¿Dónde necesitas velar y estar firme? ¿Lo estás haciendo con caridad?","call":{"ref":[45,16,13,14],"x":"Repitan juntos el versículo y oren unos por otros para permanecer firmes."}},{"t":"Noé: con Dios caminó","base":[[0,6,8,22]],"intro":"En medio de una generación corrompida y llena de violencia, la Biblia destaca a un hombre: Noé.","pts":[{"t":"Halló gracia","refs":[[0,6,8,8]],"x":"Todo comienza con la gracia de Dios, no con los méritos del hombre."},{"t":"Caminó con Dios","refs":[[0,6,9,9]],"x":"Noé fue varón justo y perfecto en sus generaciones porque caminaba con Dios, día tras día."},{"t":"Hizo conforme a todo lo que Dios le mandó","refs":[[0,6,22,22],[57,11,7,7]],"x":"Noé obedeció en todo, por la fe, y aparejó el arca en que su casa se salvase."}],"app":"¿Estás caminando con Dios aunque los que te rodean no lo hagan? ¿En qué te pide obediencia completa?","call":{"ref":[57,11,7,7],"x":"Oren por sus casas, para que cada familia sea guardada por la obediencia y la fe."}},{"t":"Daniel: un hombre de oración","base":[[26,6,3,10],[26,6,19,23]],"intro":"Daniel tenía un alto cargo en el reino. Sus enemigos buscaron cómo acusarlo, pero no hallaron falta en él, sino solo su fidelidad a su Dios.","pts":[{"t":"Una vida sin falta","refs":[[26,6,4,5]],"x":"Buscaron ocasión contra Daniel y no la hallaron, porque era fiel. Su testimonio hablaba antes que sus palabras."},{"t":"Oraba como lo solía hacer antes","refs":[[26,6,10,10]],"x":"La ley del rey no cambió su costumbre: tres veces al día se hincaba de rodillas, oraba y confesaba delante de su Dios."},{"t":"Dios libra al que en él cree","refs":[[26,6,22,23]],"x":"Dios envió su ángel y cerró la boca de los leones, y ninguna lesión se halló en Daniel, porque creyó en su Dios."}],"app":"¿Tienes un tiempo fijo de oración que nada ni nadie te pueda quitar?","call":{"ref":[26,6,10,10],"x":"Que cada hombre decida hoy un lugar y una hora fija para orar cada día."}},{"t":"Edificar sobre la peña","base":[[39,7,24,27]],"intro":"Jesús terminó el Sermón del monte con una comparación: dos hombres, dos casas y una misma tormenta.","pts":[{"t":"Oír y hacer","refs":[[39,7,24,24],[58,1,22,22]],"x":"La diferencia entre los dos hombres no fue lo que oyeron, sino lo que hicieron con lo que oyeron."},{"t":"La tormenta llega a todos","refs":[[39,7,25,25],[39,7,27,27]],"x":"Lluvia, ríos y vientos golpearon las dos casas. Creer no nos libra de las pruebas, pero la peña nos sostiene en ellas."},{"t":"El fundamento es Jesucristo","refs":[[45,3,11,11]],"x":"Nadie puede poner otro fundamento que el que está puesto, el cual es Jesucristo."}],"app":"¿Sobre qué estás edificando tu vida, tu matrimonio y tu familia?","call":{"ref":[39,7,24,24],"x":"Invita a cada hombre a poner por obra esta semana algo concreto de lo que ha oído de la Palabra."}}];
+const ROMAN = ['I','II','III'];
+const refText = r => { const [b,c,s,e] = r, ch = B[b][1][c-1]; let t = ''; for(let v=s; v<=e; v++) t += (e>s ? v+' ' : '')+ch[v-1]+' '; return t.trim(); };
+function renderSermon(i){
+  const S = SERM[i], b0 = S.base[0];
+  $('discBody').innerHTML = '<button class="back-link" id="smBack">‹ Sermones</button>'+
+    '<div class="disc-head"><span class="eyebrow">Sermón para hombres · '+(i+1)+' de '+SERM.length+'</span><h2>'+esc(S.t)+'</h2><span class="small" style="color:#F3E3C8">Texto base: '+esc(S.base.map(pRef).join(' · '))+'</span></div>'+
+    '<button class="btn primary" id="smPreach">Modo predicar</button>'+
+    '<section class="step"><h3>Texto base</h3>'+S.base.map(passageHTML).join('')+'</section>'+
+    '<section class="step"><h3>Introducción</h3><p class="prose">'+esc(S.intro)+'</p></section>'+
+    '<section class="step"><h3>Desarrollo</h3>'+S.pts.map((P,k) => '<div class="pt"><h4>'+ROMAN[k]+'. '+esc(P.t)+'</h4><p>'+esc(P.x)+'</p>'+
+      P.refs.map(r => '<details><summary>'+esc(pRef(r))+'</summary><p>'+esc(refText(r))+'</p></details>').join('')+'</div>').join('')+'</section>'+
+    '<section class="step"><h3>Aplicación</h3><div class="practice">'+esc(S.app)+'</div></section>'+
+    '<section class="step"><h3>Llamado</h3><div class="memo"><p>«'+esc(refText(S.call.ref))+'»</p><span>'+esc(pRef(S.call.ref))+'</span></div><p class="prose">'+esc(S.call.x)+'</p></section>'+
+    '<div class="two"><a class="btn wa" id="smShare" target="_blank" rel="noopener" href="#">Compartir</a><button class="btn" id="smRead">Leer '+esc(B[b0[0]][0]+' '+b0[1])+'</button></div>'+
+    (i < SERM.length-1 ? '<button class="btn" id="smNext">Siguiente sermón ›</button>' : '');
+  $('smBack').onclick = () => { discView = {mode:'hub'}; discTab = 'serm'; renderDisc(); window.scrollTo(0,0); };
+  $('smPreach').onclick = () => openPreach(i);
+  $('smRead').onclick = () => openChapter(b0[0], b0[1]-1, b0[2] || 1);
+  if($('smNext')) $('smNext').onclick = () => { discView = {mode:'serm', s:i+1}; renderDisc(); window.scrollTo(0,0); };
+  $('smShare').href = wa('Sermón para hombres: '+S.t+'\nTexto base: '+S.base.map(pRef).join(' · ')+'\n\nIntroducción: '+S.intro+'\n\n'+
+    S.pts.map((P,k) => ROMAN[k]+'. '+P.t+' ('+P.refs.map(pRef).join(', ')+')\n'+P.x).join('\n\n')+
+    '\n\nAplicación: '+S.app+'\n\nLlamado: «'+refText(S.call.ref)+'» '+pRef(S.call.ref)+' (RV1909)\n\n'+appLink());
+}
+let prS = 0, prK = 0, wakeLock = null;
+function preachSlides(S){
+  const sl = [{k:'Sermón para hombres', h:S.t, v:refText(S.base[0]), r:pRef(S.base[0])+(S.base.length>1 ? ' · '+S.base.slice(1).map(pRef).join(' · ') : ''), x:''},
+              {k:'Introducción', h:'', v:'', r:'', x:S.intro}];
+  S.pts.forEach((P,k) => sl.push({k:'Punto '+(k+1)+' de 3', h:ROMAN[k]+'. '+P.t, v:refText(P.refs[0]), r:P.refs.map(pRef).join(' · '), x:P.x}));
+  sl.push({k:'Aplicación', h:'', v:'', r:'', x:S.app});
+  sl.push({k:'Llamado', h:'', v:refText(S.call.ref), r:pRef(S.call.ref), x:S.call.x});
+  return sl;
+}
+function renderPreach(){
+  const S = SERM[prS], sl = preachSlides(S), d = sl[prK];
+  $('prTitle').textContent = S.t; $('prStep').textContent = (prK+1)+' / '+sl.length;
+  $('prBody').innerHTML = '<span class="k">'+esc(d.k)+'</span>'+(d.h ? '<h2>'+esc(d.h)+'</h2>' : '')+
+    (d.v ? '<p class="vt2">«'+esc(d.v)+'»</p><span class="rf">'+esc(d.r)+'</span>' : '')+(d.x ? '<p class="tx2">'+esc(d.x)+'</p>' : '');
+  $('prBody').scrollTop = 0;
+  $('prPrev').disabled = prK === 0; $('prNext').textContent = prK === sl.length-1 ? 'Terminar' : 'Siguiente ›';
+}
+async function openPreach(i){
+  prS = i; prK = 0; $('preach').hidden = false; renderPreach();
+  try{ if(navigator.wakeLock) wakeLock = await navigator.wakeLock.request('screen'); }catch(e){ wakeLock = null; }
+}
+function closePreach(){ $('preach').hidden = true; try{ if(wakeLock) wakeLock.release(); }catch(e){} wakeLock = null; }
+$('prPrev').onclick = () => { if(prK > 0){ prK--; renderPreach(); } };
+$('prNext').onclick = () => { const n = preachSlides(SERM[prS]).length; if(prK < n-1){ prK++; renderPreach(); } else closePreach(); };
+$('prClose').onclick = closePreach;
+document.addEventListener('visibilitychange', async () => {
+  if(document.visibilityState === 'visible' && !$('preach').hidden && navigator.wakeLock){ try{ wakeLock = await navigator.wakeLock.request('screen'); }catch(e){} }
+});
+
 // ---------- tamaño de letra ----------
 function applySize(){ document.documentElement.style.setProperty('--read-size', size+'px'); $('sizeLbl').textContent = size+' px'; }
 applyBg();
@@ -1060,7 +1153,7 @@ window.addEventListener('beforeinstallprompt', e => { e.preventDefault(); instal
 $('installBtn').onclick = async () => { if(!installEvt) return; installEvt.prompt(); try{ await installEvt.userChoice; }catch(e){} installEvt = null; $('installBtn').hidden = true; };
 window.addEventListener('appinstalled', () => toast('Santa Biblia quedó instalada'));
 // ---------- actualizaciones ----------
-const APP_VERSION = 'v7';
+const APP_VERSION = 'v8';
 let swReg = null, updChecking = false, lastCheck = 0;
 if('serviceWorker' in navigator){
   window.addEventListener('load', () => {
