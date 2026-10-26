@@ -265,6 +265,11 @@ nav.tabs{position:fixed; left:0; right:0; bottom:0; z-index:20; background:var(-
 .two{display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:10px}
 .two .btn{padding-inline:10px}
 @media (max-width:440px){ .brand svg{display:none} .brand span{font-size:15px} }
+.upd-bar{position:fixed; left:max(12px,env(safe-area-inset-left,0px)); right:max(12px,env(safe-area-inset-right,0px)); bottom:calc(70px + env(safe-area-inset-bottom,0px)); z-index:39;
+  max-width:696px; margin:0 auto; background:var(--head); color:var(--head-fg); border-radius:14px; padding:10px 8px 10px 16px; display:flex; align-items:center; gap:10px; box-shadow:0 8px 24px rgba(0,0,0,.28); font-weight:600}
+.upd-bar span{flex:1; min-width:0; font-size:15px}
+.upd-bar .btn.primary{background:var(--gold); border-color:var(--gold); color:#2A1A1C; flex:none}
+.upd-x{background:none; border:0; color:var(--head-fg); width:40px; height:40px; flex:none; font-size:18px}
 .loading{display:flex; flex-direction:column; align-items:center; gap:12px; padding:60px 0; color:var(--muted); text-align:center}
 @media (prefers-reduced-motion: no-preference){ .loading svg{animation:glow 1.8s ease-in-out infinite} @keyframes glow{50%{opacity:.55}} }
 </style>
@@ -443,6 +448,11 @@ nav.tabs{position:fixed; left:0; right:0; bottom:0; z-index:20; background:var(-
     <button class="btn wa" id="shareImg">Compartir imagen</button>
     <a class="btn" id="shareTxt" href="#" target="_blank" rel="noopener">Enviar solo el texto por WhatsApp</a>
   </div>
+</div>
+<div class="upd-bar" id="updBar" role="status" hidden>
+  <span>Hay una versión nueva de Santa Biblia.</span>
+  <button class="btn primary" id="updBtn">Actualizar</button>
+  <button class="upd-x" id="updLater" aria-label="Más tarde">✕</button>
 </div>
 <div class="toast" id="toast" role="status" hidden></div>
 
@@ -1049,7 +1059,47 @@ let installEvt = null;
 window.addEventListener('beforeinstallprompt', e => { e.preventDefault(); installEvt = e; $('installBtn').hidden = false; });
 $('installBtn').onclick = async () => { if(!installEvt) return; installEvt.prompt(); try{ await installEvt.userChoice; }catch(e){} installEvt = null; $('installBtn').hidden = true; };
 window.addEventListener('appinstalled', () => toast('Santa Biblia quedó instalada'));
-if('serviceWorker' in navigator){ window.addEventListener('load', () => navigator.serviceWorker.register('sw.js').catch(()=>{})); }
+// ---------- actualizaciones ----------
+const APP_VERSION = 'v7';
+let swReg = null, updChecking = false, lastCheck = 0;
+if('serviceWorker' in navigator){
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('sw.js', {updateViaCache:'none'}).then(r => { swReg = r; }).catch(() => {});
+  });
+}
+async function checkUpdate(force){
+  if(updChecking || !navigator.onLine) return;
+  if(!force && Date.now() - lastCheck < 60000) return;
+  updChecking = true; lastCheck = Date.now();
+  try{
+    const r = await fetch('version.json?t=' + Date.now(), {cache:'no-store'});
+    if(r.ok){
+      const v = (await r.json()).version;
+      if(v && v !== APP_VERSION){
+        try{ if(swReg) swReg.update(); }catch(e){}
+        $('updBar').hidden = false;
+      }
+    }
+  }catch(e){}
+  updChecking = false;
+}
+async function applyUpdate(){
+  $('updBtn').disabled = true; $('updBtn').textContent = 'Actualizando…';
+  try{
+    if(swReg){ await swReg.update(); if(swReg.waiting) swReg.waiting.postMessage('skipWaiting'); }
+    if(window.caches){
+      const ks = await caches.keys();
+      // Se borra solo la copia de la app; el texto bíblico, las fuentes y tus notas se conservan.
+      await Promise.all(ks.filter(k => k.startsWith('santa-biblia-') && !k.startsWith('santa-biblia-datos') && k !== 'santa-biblia-fuentes').map(k => caches.delete(k)));
+    }
+  }catch(e){}
+  location.reload();
+}
+$('updBtn').onclick = applyUpdate;
+$('updLater').onclick = () => { $('updBar').hidden = true; };
+document.addEventListener('visibilitychange', () => { if(document.visibilityState === 'visible') checkUpdate(false); });
+window.addEventListener('online', () => checkUpdate(true));
+setTimeout(() => checkUpdate(true), 2500);
 
 // ---------- carga ----------
 applySize();
