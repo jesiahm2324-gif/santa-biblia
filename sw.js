@@ -1,6 +1,6 @@
 // Santa Biblia: guarda la app y el texto bíblico para abrir al instante y leer sin conexión.
 // Al publicar cambios: sube el número de versión aquí, en version.json y en APP_VERSION de index.html.
-const VERSION = 'santa-biblia-v8';
+const VERSION = 'santa-biblia-v9';
 const DATOS = 'santa-biblia-datos-rv1909';   // el texto bíblico: se descarga una sola vez y no se borra al actualizar
 const FONTS = 'santa-biblia-fuentes';
 const ARCHIVOS = [
